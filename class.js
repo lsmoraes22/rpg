@@ -20,7 +20,7 @@ class sprite{
         this.sound = (isNull(sndName) || !sndName ? false : snd.audList[sndName])  //som da animacao
     }
     draw(){
-      var adjust = ((this.image.width-this.standartgridSize)/12);
+      var adjust = ((this.image.width-this.standartgridSize)/2);
         if( this.position.x<canvas.width &&
             this.position.y<canvas.height &&
             this.position.x+this.image.width>0 &&
@@ -32,7 +32,7 @@ class sprite{
                 this.image.cropWidth,
                 this.image.cropHeight,
                 this.position.x-adjust,
-                this.position.y-adjust,
+                this.position.y,
                 this.image.width,
                 this.image.height,
             )
@@ -311,12 +311,12 @@ class character {                                              //personagem
             y:0,
             imgName: tilesetName,
             sndName: null,
-            assX:1,
-            assY:12,
-            cropWidth:gridSize*2,
-            cropHeight:gridSize*2,
-            width:gridSize*2,
-            height:gridSize*2,
+            assX:0,
+            assY:25,
+            cropWidth:gridSize*3,
+            cropHeight:gridSize*3,
+            width:gridSize*3,
+            height:gridSize*3,
             imgFrm:6,
             loop: false,
             next: 'stopLeft',
@@ -329,12 +329,12 @@ class character {                                              //personagem
             y:0,
             imgName: tilesetName,
             sndName: null,
-            assX:1,
-            assY:13,
-            cropWidth:gridSize*2,
-            cropHeight:gridSize*2,
-            width:gridSize*2,
-            height:gridSize*2,
+            assX:0,
+            assY:28,
+            cropWidth:gridSize*3,
+            cropHeight:gridSize*3,
+            width:gridSize*3,
+            height:gridSize*3,
             imgFrm:6,
             loop: false,
             next: 'stopDown',
@@ -347,12 +347,12 @@ class character {                                              //personagem
             y:0,
             imgName: tilesetName,
             sndName: null,
-            assX:1,
-            assY:14,
-            cropWidth:gridSize*2,
-            cropHeight:gridSize*2,
-            width:gridSize*2,
-            height:gridSize*2,
+            assX:0,
+            assY:31,
+            cropWidth:gridSize*3,
+            cropHeight:gridSize*3,
+            width:gridSize*3,
+            height:gridSize*3,
             imgFrm:6,
             loop: false,
             next: 'stopRight',
@@ -360,11 +360,32 @@ class character {                                              //personagem
             speedAnimation:0.7,
             standartgridSize: 64
           }),
+          die: new sprite({
+            x:0,
+            y:0,
+            imgName: tilesetName,
+            sndName: null,
+            assX:0,
+            assY:20,
+            cropWidth:gridSize,
+            cropHeight:gridSize,
+            width:gridSize,
+            height:gridSize,
+            imgFrm:10,
+            loop: false,
+            next: null,
+            end: false,
+            speedAnimation:0.3,
+            standartgridSize: 64
+          }),
         }
         this.principal = false                                 //personagem controlado pelo joystick
     }
     setNextSprite(sprt){
       this.currentSprite = sprt;
+    }
+    die(){
+      this.nameSprite = 'die';
     }
     attack(){
       if(this.nameSprite=='moveUp' || this.nameSprite=='stopUp'){
