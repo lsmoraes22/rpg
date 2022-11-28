@@ -256,8 +256,8 @@ function init(level){
               new tile({ x:28*(gridSize/2), y:7*(gridSize/2), imgName: 'tileset-autumn'}),
               /**/
             ]
-            Principal = new principal({x:300,y:150, tilesetName: 'minotauro'});
-            //btns = create_joystick('b');
+            Principal = new principal({x:300,y:150, tilesetName: 'spy'});
+            btns = create_joystick('b');
         break;
     }
 }
