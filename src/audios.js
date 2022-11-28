@@ -1,6 +1,6 @@
 class audioCanvas {
 
-    aud_src = "sounds/";
+    aud_src = "resources/sounds/";
     audList = [];
 
     preloadAudio = function (){

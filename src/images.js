@@ -3,7 +3,7 @@ class imageCanvas {
 
     imgList = [];
     imageObj = "";
-    img_src= "images/";
+    img_src= "resources/images/";
 
     resources = [
         {name: "tileset-autumn",          src: this.img_src+"AutumnTileset.png",	    sx:0,	sy:0,	width:32,	height:32	},
