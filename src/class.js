@@ -36,7 +36,6 @@ class sprite{
                 this.image.width,
                 this.image.height,
             )
-            //if(this.image.img=='minotauro'){console.log(this.position.x-adjust,this.position.y-adjust);}
         }
     }
     animation(){
@@ -136,12 +135,14 @@ class sound{
         snd.audList[this.audioName].pause();
     }
 }
+
 class character {                                              //personagem
     constructor({x, y, colx, coly, colw, colh, tilesetName}){
         this.position = {x: x, y: y}
         this.currentSprite = null                              //sprite atual
         this.bodyColision = {x:colx, y:coly, w:colw, h:colh}   //pontos de colisao
         this.tilesetName = tilesetName                         //nome da imagem que contem o tileset
+        this.weaponClass = 'melee'                             //melee or ranged
         this.sprites = {
           /*criar new sprite*/
           moveUp: new sprite({
@@ -378,6 +379,78 @@ class character {                                              //personagem
             speedAnimation:0.3,
             standartgridSize: 64
           }),
+          arrowUp: new sprite({
+            x:0,
+            y:0,
+            imgName: tilesetName,
+            sndName: null,
+            assX:0,
+            assY:16,
+            cropWidth:gridSize,
+            cropHeight:gridSize,
+            width:gridSize,
+            height:gridSize,
+            imgFrm:6,
+            loop: false,
+            next: 'stopUp',
+            end: false,
+            speedAnimation:0.7,
+            standartgridSize: 64
+          }),
+          arrowLeft: new sprite({
+            x:0,
+            y:0,
+            imgName: tilesetName,
+            sndName: null,
+            assX:0,
+            assY:17,
+            cropWidth:gridSize,
+            cropHeight:gridSize,
+            width:gridSize,
+            height:gridSize,
+            imgFrm:6,
+            loop: false,
+            next: 'stopLeft',
+            end: false,
+            speedAnimation:0.7,
+            standartgridSize: 64
+          }),
+          arrowDown: new sprite({
+            x:0,
+            y:0,
+            imgName: tilesetName,
+            sndName: null,
+            assX:0,
+            assY:18,
+            cropWidth:gridSize,
+            cropHeight:gridSize,
+            width:gridSize,
+            height:gridSize,
+            imgFrm:6,
+            loop: false,
+            next: 'stopDown',
+            end: false,
+            speedAnimation:0.7,
+            standartgridSize: 64
+          }),
+          arrowRight: new sprite({
+            x:0,
+            y:0,
+            imgName: tilesetName,
+            sndName: null,
+            assX:0,
+            assY:19,
+            cropWidth:gridSize,
+            cropHeight:gridSize,
+            width:gridSize,
+            height:gridSize,
+            imgFrm:6,
+            loop: false,
+            next: 'stopRight',
+            end: false,
+            speedAnimation:0.7,
+            standartgridSize: 64
+          }),
         }
         this.principal = false                                 //personagem controlado pelo joystick
     }
@@ -388,14 +461,26 @@ class character {                                              //personagem
       this.nameSprite = 'die';
     }
     attack(){
-      if(this.nameSprite=='moveUp' || this.nameSprite=='stopUp'){
-          this.nameSprite = 'attackUp';
-      } else if (this.nameSprite=='moveLeft' || this.nameSprite=='stopLeft') {
-          this.nameSprite = 'attackLeft';
-      } else if (this.nameSprite=='moveDown' || this.nameSprite=='stopDown') {
-          this.nameSprite = 'attackDown';
-      } else if (this.nameSprite=='moveRight' || this.nameSprite=='stopRight') {
-          this.nameSprite = 'attackRight';
+      if(this.weaponClass == 'melee'){
+        if(this.nameSprite=='moveUp' || this.nameSprite=='stopUp'){
+            this.nameSprite = 'attackUp';
+        } else if (this.nameSprite=='moveLeft' || this.nameSprite=='stopLeft') {
+            this.nameSprite = 'attackLeft';
+        } else if (this.nameSprite=='moveDown' || this.nameSprite=='stopDown') {
+            this.nameSprite = 'attackDown';
+        } else if (this.nameSprite=='moveRight' || this.nameSprite=='stopRight') {
+            this.nameSprite = 'attackRight';
+        }
+      } if(this.weaponClass == 'ranged'){
+        if(this.nameSprite=='moveUp' || this.nameSprite=='stopUp'){
+            this.nameSprite = 'arrowUp';
+        } else if (this.nameSprite=='moveLeft' || this.nameSprite=='stopLeft') {
+            this.nameSprite = 'arrowLeft';
+        } else if (this.nameSprite=='moveDown' || this.nameSprite=='stopDown') {
+            this.nameSprite = 'arrowDown';
+        } else if (this.nameSprite=='moveRight' || this.nameSprite=='stopRight') {
+            this.nameSprite = 'arrowRight';
+        }
       }
     }
     action(sprt){                                              //funcao executa a animacao atual

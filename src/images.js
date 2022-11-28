@@ -6,11 +6,14 @@ class imageCanvas {
     img_src= "resources/images/";
 
     resources = [
-        {name: "tileset-autumn",          src: this.img_src+"AutumnTileset.png",	    sx:0,	sy:0,	width:32,	height:32	},
-        {name: "tileset-ice",             src: this.img_src+"IceTileset.png",	        sx:0,	sy:0,	width:32,	height:32	},
+        {name: "tileset-autumn",          src: this.img_src+"AutumnTileset.png"},
+        {name: "tileset-ice",             src: this.img_src+"IceTileset.png",	        	},
         {name: "tileset-nature",          src: this.img_src+"NatureTileset.png",	    sx:0,	sy:0,	width:23,	height:32	},
         {name: "minotauro",               src: this.img_src+"minotauro.png",	        sx:0,	sy:0,	width:23,	height:32	},
         {name: "spy",                     src: this.img_src+"spy.png",	              sx:0,	sy:0,	width:64,	height:64	},
+        {name: "greenGoblin",             src: this.img_src+"greenGoblin.png",	      sx:0,	sy:0,	width:64,	height:64	},
+        {name: "skeleton_arow",           src: this.img_src+"skeleton_arow.png",	    sx:0,	sy:0,	width:64,	height:64	},
+        {name: "arrows",                  src: this.img_src+"arrows.png",	            sx:0,	sy:0,	width:64,	height:64	},
         {name: "button_a",                src: this.img_src+"button_a.png",	          sx:0,	sy:0,	width:100,	height:100	},
         {name: "btn_center",              src: this.img_src+"btn_center.png",	        sx:0,	sy:0,	width:60,	height:60	},
         {name: "btn_down",                src: this.img_src+"btn_down.png",	          sx:0,	sy:0,	width:60,	height:130 },

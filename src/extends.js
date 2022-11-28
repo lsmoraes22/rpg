@@ -49,6 +49,12 @@ class tile extends character{
   }
 }
 
+class arrow {
+  constructor() {
+
+  }
+}
+
 class principal extends character{
   constructor({x,y,tilesetName}){
     super({x: x,y: y, tilesetName: tilesetName })
@@ -56,6 +62,7 @@ class principal extends character{
     this.bodyColision = {x:20, y:20, w:20, h:20}           //pontos de colisao
     this.principal = true                                  //personagem controlado pelo joystick
     this.tilesetName = tilesetName
+    this.weaponClass = 'ranged'
   }
   isAlive(){if(this.nameSprite !== null){return true;}}
   update(){
