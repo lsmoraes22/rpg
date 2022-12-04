@@ -1,46 +1,8 @@
-class tile extends character{
-    constructor({x,y,imgName,assX,assY}){
-      super({x: x,y: y}) //, colx:4, coly:4, colw:26, colh:31})
-      this.nameSprite = 'tile'                                 //sprite atual
-      this.principal = false                                 //personagem controlado pelo joystick
-      this.sprites = {
-        tile: new sprite({
-        x:100,
-        y:100,
-        imgName:'tileset-autumn',
-        sndName: null,
-        assX:0,
-        assY:2,
-        cropWidth: gridSize/2,
-        cropHeight: gridSize/2,
-        width: gridSize/2,
-        height: gridSize/2,
-        imgFrm:1,
-        loop: true,
-        next: null,
-        end: false,
-        speedAnimation:0.1,
-        standartgridSize: 32
-        }),
-        tile2: new sprite({
-        x:100,
-        y:100,
-        imgName:'tileset-autumn',
-        sndName: null,
-        assX:0,
-        assY:3,
-        cropWidth: gridSize/2,
-        cropHeight: gridSize/2,
-        width: gridSize/2,
-        height: gridSize/2,
-        imgFrm:1,
-        loop: true,
-        next: null,
-        end: false,
-        speedAnimation:0.1,
-        standartgridSize: 64
-        }),
-    }
+class map extends tile {
+  constructor({x, y, tilesetName, gridX, gridY}) {
+    super({x:x, y:y, tilesetName:tilesetName, gridX:gridX, gridY:gridY})
+    this.nameSprite = 'tile';
+    this.tilesetName = tilesetName
   }
   update(){
     if(this.nameSprite !== null){
@@ -49,9 +11,93 @@ class tile extends character{
   }
 }
 
-class arrow {
-  constructor() {
+class arrow extends character{
+  constructor({x,y}) {
+    super({x:x, y:y, tilesetName:'arrows'})
+    this.nameSprite = 'moveUp'                             //sprite atual
+    this.bodyColision = {x:20, y:20, w:20, h:20}           //pontos de colisao
+    this.principal = true                                  //personagem controlado pelo joystick
+    this.tilesetName = 'arrows'
+    this.weaponClass = 'ranged'
+    this.sprites.moveUp.imgName = 'arrows'
+    this.sprites.moveUp.sndName = null
+    this.sprites.moveUp.assX = 0
+    this.sprites.moveUp.assY = 0
+    this.sprites.moveUp.cropWidth = gridSize
+    this.sprites.moveUp.cropHeight = gridSize
+    this.sprites.moveUp.width = gridSize
+    this.sprites.moveUp.height = gridSize
+    this.sprites.moveUp.imgFrm = 1
+    this.sprites.moveUp.loop = true
+    this.sprites.moveUp.next = null
+    this.sprites.moveUp.speedAnimation = 0.9
 
+
+    this.sprites.stopUp.imgName = 'arrows'
+    this.sprites.stopUp.sndName = null
+    this.sprites.stopUp.assX = 1
+    this.sprites.stopUp.assY = 1
+    this.sprites.stopUp.cropWidth = gridSize
+    this.sprites.stopUp.cropHeight = gridSize
+    this.sprites.stopUp.width = gridSize
+    this.sprites.stopUp.height = gridSize
+    this.sprites.stopUp.imgFrm = 1
+    this.sprites.stopUp.loop = true
+    this.sprites.stopUp.next = null
+    this.sprites.stopUp.speedAnimation = 0.9
+
+    this.sprites.moveLeft.imgName = 'arrows'
+    this.sprites.moveLeft.sndName = null
+    this.sprites.moveLeft.assX = 0
+    this.sprites.moveLeft.assY = 1
+    this.sprites.moveLeft.cropWidth = gridSize
+    this.sprites.moveLeft.cropHeight = gridSize
+    this.sprites.moveLeft.width = gridSize
+    this.sprites.moveLeft.height = gridSize
+    this.sprites.moveLeft.imgFrm = 1
+    this.sprites.moveLeft.loop = true
+    this.sprites.moveLeft.next = null
+    this.sprites.moveLeft.speedAnimation = 0.9
+
+    this.sprites.moveDown.imgName = 'arrows'
+    this.sprites.moveDown.sndName = null
+    this.sprites.moveDown.assX = 0
+    this.sprites.moveDown.assY = 2
+    this.sprites.moveDown.cropWidth = gridSize
+    this.sprites.moveDown.cropHeight = gridSize
+    this.sprites.moveDown.width = gridSize
+    this.sprites.moveDown.height = gridSize
+    this.sprites.moveDown.imgFrm = 1
+    this.sprites.moveDown.loop = true
+    this.sprites.moveDown.next = null
+    this.sprites.moveDown.speedAnimation = 0.9
+
+    this.sprites.moveRight.imgName = 'arrows'
+    this.sprites.moveRight.sndName = null
+    this.sprites.moveRight.assX = 0
+    this.sprites.moveRight.assY = 2
+    this.sprites.moveRight.cropWidth = gridSize
+    this.sprites.moveRight.cropHeight = gridSize
+    this.sprites.moveRight.width = gridSize
+    this.sprites.moveRight.height = gridSize
+    this.sprites.moveRight.imgFrm = 1
+    this.sprites.moveRight.loop = true
+    this.sprites.moveRight.next = null
+    this.sprites.moveRight.speedAnimation = 0.9
+
+  }
+  isActive(){if(this.nameSprite !== null){return true;}}
+  update(){/*
+    if(this.nameSprite == 'moveUp'){ this.position.y--;}
+    if(this.nameSprite == 'moveLeft'){ this.position.x--;}
+    if(this.nameSprite == 'moveDown'){ this.position.y++;}
+    if(this.nameSprite == 'moveRight'){ this.position.x++;}
+    /**/
+    if(this.isActive()){
+      if(this.nameSprite !== null){
+        this.action(this.sprites[this.nameSprite]);
+      }
+    }
   }
 }
 
@@ -62,7 +108,7 @@ class principal extends character{
     this.bodyColision = {x:20, y:20, w:20, h:20}           //pontos de colisao
     this.principal = true                                  //personagem controlado pelo joystick
     this.tilesetName = tilesetName
-    this.weaponClass = 'ranged'
+    this.weaponClass = 'melee'                             //melee or ranged
   }
   isAlive(){if(this.nameSprite !== null){return true;}}
   update(){
@@ -72,6 +118,13 @@ class principal extends character{
       }
     }
   }
+}
+
+class background extends images {
+  constructor({x,y,imgName}){
+    super({x: x,y: y, imgName:imgName})
+  }
+  update(){ this.animation(); }
 }
 
 class btn_a extends images {
@@ -126,8 +179,10 @@ class btn_downright extends images {
 }
 
 let tiles = [];
-let Principal = null;
+let backgrounds = [];
 let btns = [];
+let arrows = [];
+let Principal = null;
 
 function resetObjects(){
 

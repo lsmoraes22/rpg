@@ -109,6 +109,24 @@ class images{
            }
     }
 }
+
+class colision{
+  constructor(x, y, colx, coly, colw, colh){
+    this.position = {x: x, y: y}
+    this.colision = {x:colx, y:coly, w:colw, h:colh}   //pontos de colisao
+  }
+  run(){
+    if(x>=this.position.x+this.colision.x &&
+       x<=this.position.x+this.colision.x+this.colision.w &&
+       y>=this.position.y+this.colision.y &&
+       y<=this.position.y+this.colision.y+this.colision.h){
+       return true;
+    }else{
+       return false;
+    }
+  }
+}
+
 class sound{
     constructor({audioName}){
         this.audioName = audioName
@@ -133,6 +151,53 @@ class sound{
     }
     pause = function (){
         snd.audList[this.audioName].pause();
+    }
+}
+
+class tile {                                              //personagem
+    constructor({x, y, tilesetName, gridX, gridY}){
+        this.position = {x: x, y: y}
+        this.currentSprite = null                              //sprite atual
+        this.tilesetName = tilesetName                         //nome da imagem que contem o tileset
+        this.sprites = {
+          /*criar new sprite*/
+          tile: new sprite({
+            x:x,
+            y:y,
+            imgName: tilesetName,
+            sndName: null,
+            assX:gridX,
+            assY:gridY,
+            cropWidth: gridSize/2,
+            cropHeight: gridSize/2,
+            width: gridSize/2,
+            height: gridSize/2,
+            imgFrm:1,
+            loop: true,
+            next: null,
+            end: false,
+            speedAnimation:0.9,
+            standartgridSize: 32
+          }),
+        }
+    }
+    action(sprt){                                              //funcao executa a animacao atual
+        this.currentSprite = sprt;
+        this.currentSprite.position.x = this.position.x;
+        this.currentSprite.position.y = this.position.y;
+        if(
+            this.currentSprite.position.x<canvas.width*2 &&
+            this.currentSprite.position.x>-canvas.width &&
+            this.currentSprite.position.y<canvas.height*2 &&
+            this.currentSprite.position.y>-canvas.height
+        ){
+          if(this.currentSprite.animation()){
+            if(this.sprites[this.nameSprite].image.end){
+              this.nameSprite = this.sprites[this.nameSprite].image.next;
+              this.currentSprite = this.sprites[this.nameSprite];
+            }
+          }
+        }
     }
 }
 
@@ -528,17 +593,6 @@ class character {                                              //personagem
           }
         }
     }
-    colision(x,y){
-        var colision = {position:{x: this.position.x, y:this.position.y}}
-        if(x>=colision.position.x+this.bodyColision.x &&
-           x<=colision.position.x+this.bodyColision.x+this.bodyColision.w &&
-           y>=colision.position.y+this.bodyColision.y &&
-           y<=colision.position.y+this.bodyColision.y+this.bodyColision.h){
-           return true;
-           }else{
-           return false;
-           }
-    }
     points(number){                                            //pontos do objeto para colisao
         var ret = {x:null, y:null};
         switch(number) {
@@ -576,5 +630,8 @@ class character {                                              //personagem
            break;
         }
         return ret;
+    }
+    colision(){
+
     }
 }

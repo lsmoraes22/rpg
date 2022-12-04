@@ -10,8 +10,11 @@ function animate(){
         canvas.width = (screen.width<=900 ? screen.width : 900)  //640;   //innerWidth; 1024
         canvas.height = (screen.height<=400 ? screen.height : 400) // 360;  //innerHeight;  576
         document.getElementById('turn_device').style.display = 'none';
-        tiles.forEach((item, i) => { item.update();});
+        //tiles.forEach((item, i) => { item.update();});
+        backgrounds.forEach((item, i) => {item.update();});
+        tiles.forEach((item, i) => {item.update();});
         Principal.update();
+        arrows.forEach((item, i) => { item.update();});
         btns.forEach((item, i) => { item.update();});
 /* click mouse */
 
