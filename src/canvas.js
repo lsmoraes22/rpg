@@ -19,7 +19,16 @@ let level = 0;
 let action = false;   //carrega o jogador
 let pause = false;    /*  */
 let scenario = {
-    c:0, r:0, x:0 , y:0, cMin:0, cMax:0, rMin:0, rMax:0, cWidth: 900, rHeight: 400,
+    c:0,                 //coluna cenario atual
+    r:0,                 //linha cenario atual
+    x:0 ,                //usado no calculo
+    y:0,                 //usado no calculo
+    cMin:0,              //coluna minima horizontal
+    cMax:0,              //coluna maxima horizontal
+    rMin:0,              //linha minima vertical
+    rMax:0,              //linha maxima vertical
+    cWidth: 900,         //largura do cenario
+    rHeight: 400,        //altura do cenario
     update: function(){
         this.c = Math.ceil(this.x/this.cWidth);     //canvas.width 640
         this.r = Math.ceil(this.y/this.rHeight);    // canvas.height 360

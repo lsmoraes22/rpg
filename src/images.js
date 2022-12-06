@@ -9,7 +9,7 @@ class imageCanvas {
         {name: "tileset-autumn",          src: this.img_src+"AutumnTileset.png",      sx:0,	sy:0,	width:32,	height:32 },
         {name: "tileset-ice",             src: this.img_src+"IceTileset.png",	        sx:0,	sy:0,	width:32,	height:32	},
         {name: "tileset-nature",          src: this.img_src+"NatureTileset.png",	    sx:0,	sy:0,	width:32,	height:32	},
-        {name: "transferir",              src: this.img_src+"transferir.png",	        sx:0,	sy:0,	width:32,	height:32	},
+        {name: "scene1",                  src: this.img_src+"scene1.png",	            sx:0,	sy:0,	width:1800,height:400},
         {name: "minotauro",               src: this.img_src+"minotauro.png",	        sx:0,	sy:0,	width:23,	height:32	},
         {name: "spy",                     src: this.img_src+"spy.png",	              sx:0,	sy:0,	width:64,	height:64	},
         {name: "greenGoblin",             src: this.img_src+"greenGoblin.png",	      sx:0,	sy:0,	width:64,	height:64	},

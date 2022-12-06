@@ -5,7 +5,7 @@ class map extends tile {
     this.tilesetName = tilesetName
   }
   update(){
-    if(this.nameSprite !== null){
+    if(this.isActive()){
       this.action(this.sprites[this.nameSprite]);
     }
   }
@@ -120,11 +120,27 @@ class principal extends character{
   }
 }
 
-class background extends images {
-  constructor({x,y,imgName}){
-    super({x: x,y: y, imgName:imgName})
+class background extends tile {
+  constructor({x, y, imgName}) {
+    super({x:x, y:y, tilesetName:imgName, gridX:0, gridY:0})
+    this.nameSprite = 'tile'
+    this.width = img.imgList[imgName].image.width;
+    this.height = img.imgList[imgName].image.height
+    this.tilesetName = imgName
+    this.sprites.tile.image.img = imgName                         //nome da imagem
+    this.sprites.tile.image.assetPos.x = 0                        //posicao x do quadrante dentro do asset
+    this.sprites.tile.image.assetPos.y = 0                        //posicao y do quadrante dentro do asset
+    this.sprites.tile.image.width = this.width                    //largura da colagem da imagem
+    this.sprites.tile.image.height = this.height                  //altura da colagem da imagem
+    this.sprites.tile.image.cropWidth = this.width                //largura do corte da imagem
+    this.sprites.tile.image.cropHeight = this.height              //altura do corte da imagem
+    this.sprites.tile.image.imgFrm = 1                            //quantidade de imagens da animacao
   }
-  update(){ this.animation(); }
+  update(){
+    if(this.isActive()){
+      this.action(this.sprites[this.nameSprite]);
+    }
+  }
 }
 
 class btn_a extends images {
@@ -178,12 +194,19 @@ class btn_downright extends images {
     update(){ this.animation(); }
 }
 
-let tiles = [];
+let tiles_layer0 = [];
+let tiles_layer1 = [];
 let backgrounds = [];
 let btns = [];
 let arrows = [];
 let Principal = null;
 
 function resetObjects(){
-
+  scenario.reset();
+  tiles_layer0 = [];
+  tiles_layer1 = [];
+  backgrounds = [];
+  btns = [];
+  arrows = [];
+  Principal = null;
 }

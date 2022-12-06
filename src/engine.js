@@ -10,15 +10,38 @@ function animate(){
         canvas.width = (screen.width<=900 ? screen.width : 900)  //640;   //innerWidth; 1024
         canvas.height = (screen.height<=400 ? screen.height : 400) // 360;  //innerHeight;  576
         document.getElementById('turn_device').style.display = 'none';
-        //tiles.forEach((item, i) => { item.update();});
-        backgrounds.forEach((item, i) => {item.update();});
-        tiles.forEach((item, i) => {item.update();});
+        scenario.update();
+        backgrounds.forEach((item, i) => {
+          item.update();
+
+        });
         Principal.update();
         arrows.forEach((item, i) => { item.update();});
+        tiles_layer0.forEach((item, i) => {item.update();});
+        tiles_layer1.forEach((item, i) => {item.update();});
         btns.forEach((item, i) => { item.update();});
+/*colisions*/
+        tiles_layer0.forEach((item, i) => {
+          var p1 = Principal.points(1);     //ponto 0 do relogio analogico
+          var p2 = Principal.points(2);     //ponto 2 do relogio analogico
+          var p3 = Principal.points(3);     //ponto 3 do relogio analogico
+          var p4 = Principal.points(4);     //ponto 4 do relogio analogico
+          var p5 = Principal.points(5);     //ponto 6 do relogio analogico
+          var p6 = Principal.points(6);     //ponto 7 do relogio analogico
+          var p7 = Principal.points(7);     //ponto 9 do relogio analogico
+          var p8 = Principal.points(8);     //ponto 11 do relogio analogico
+          if( item.colision(p2.x,p2.y) ){ Principal.position.x-=principalSpeedMove; Principal.position.y+=principalSpeedMove; } else
+          if( item.colision(p4.x,p4.y) ){ Principal.position.x-=principalSpeedMove; Principal.position.y-=principalSpeedMove;} else
+          if( item.colision(p6.x,p6.y) ){ Principal.position.x+=principalSpeedMove;Principal.position.y-=principalSpeedMove;} else
+          if( item.colision(p8.x,p8.y) ){ Principal.position.x+=principalSpeedMove;Principal.position.y+=principalSpeedMove;} else
+          if( item.colision(p1.x,p1.y) ){ Principal.position.y+=principalSpeedMove;} else
+          if( item.colision(p3.x,p3.y) ){ Principal.position.x-=principalSpeedMove; } else
+          if( item.colision(p5.x,p5.y) ){ Principal.position.y-=principalSpeedMove; } else
+          if( item.colision(p7.x,p7.y) ){ Principal.position.x+=principalSpeedMove;}
+        });
+/*colisions*/
 /* click mouse */
-
-        btns.forEach((item, i) =>{
+btns.forEach((item, i) =>{
           if(Principal.nameSprite != 'explosion' && Principal.nameSprite != 'invisible' && Principal.nameSprite!=null ){
             switch(item.imgName) {
                 case "button_a":
@@ -61,8 +84,6 @@ function animate(){
     }
   }
 }
-
-
 
 if (preload()) {
     init(level);
