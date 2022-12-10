@@ -15,11 +15,21 @@ function init(level){
             resetObjects();
             scenario.cMin=0;
             scenario.cMax=2;
-            scenario.rMin=0;
+            scenario.rMin=-1;
             scenario.rMax=0;
             backgrounds = [
-              new background({x:0,y:0,imgName:'scene1'})
+              new background({x:0,y:0*(scenario.rHeight),imgName:'branco'})
             ]
+            texts = [
+
+              new text({x:0,y:150,text:'0123456789'}),
+
+            ]
+            texts.forEach((item, i) => {
+                item.load();
+            });
+
+            /*
             tiles_layer1 = [
               new map({x:7*(gridSize/2), y:6*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:0}),
               new map({x:8*(gridSize/2), y:6*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:0}),
@@ -37,8 +47,10 @@ function init(level){
               new map({x:12*(gridSize/2), y:7*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:1}),
             ]
             arrows = [ new arrow({x:200,y:200}), ]
+
             Principal = new principal({x:50,y:150, tilesetName: 'greenGoblin'});
             btns = create_joystick('b');
+            /**/
         break;
     }
 }

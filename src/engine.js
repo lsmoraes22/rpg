@@ -11,11 +11,9 @@ function animate(){
         canvas.height = (screen.height<=400 ? screen.height : 400) // 360;  //innerHeight;  576
         document.getElementById('turn_device').style.display = 'none';
         scenario.update();
-        backgrounds.forEach((item, i) => {
-          item.update();
-
-        });
-        Principal.update();
+        backgrounds.forEach((item, i) => {item.update();});
+        texts.forEach((item, i) => {item.update();});
+        if(Principal!=null){Principal.update();}
         arrows.forEach((item, i) => { item.update();});
         tiles_layer0.forEach((item, i) => {item.update();});
         tiles_layer1.forEach((item, i) => {item.update();});
@@ -45,33 +43,31 @@ btns.forEach((item, i) =>{
           if(Principal.nameSprite != 'explosion' && Principal.nameSprite != 'invisible' && Principal.nameSprite!=null ){
             switch(item.imgName) {
                 case "button_a":
-                    if(item.colision(touchRight.x,touchRight.y)){Principal.fire();}
+                    if(item.colision(touchRight.x,touchRight.y)){Principal.attack();}
                 break;
                 case "btn_upleft":
-                    if(item.colision(touchLeft.x,touchLeft.y)){
-                      Principal.position.x-=3; Principal.position.y-=3;
-                      Principal.nameSprite = 'upleft';}
+                    //if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.x-=3; Principal.position.y-=3;Principal.nameSprite = 'upleft';}
                 break;
                 case "btn_up":
-                    if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.y-=principalSpeedMove; Principal.nameSprite = 'up'}
+                    if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.y-=principalSpeedMove; Principal.nameSprite = 'moveUp'}
                 break;
                 case "btn_upright":
-                    if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.y-=principalSpeedMove; Principal.position.x+=principalSpeedMove;Principal.nameSprite = 'upright';}
+                    //if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.y-=principalSpeedMove; Principal.position.x+=principalSpeedMove;Principal.nameSprite = 'upright';}
                 break;
                 case "btn_left":
-                    if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.x-=principalSpeedMove;Principal.nameSprite = 'left'}
+                    if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.x-=principalSpeedMove;Principal.nameSprite = 'moveLeft'}
                 break;
                 case "btn_right":
-                    if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.x+=principalSpeedMove;Principal.nameSprite = 'right'}
+                    if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.x+=principalSpeedMove;Principal.nameSprite = 'moveRight'}
                 break;
                 case "btn_downleft":
-                    if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.y+=principalSpeedMove; Principal.position.x-=principalSpeedMove;Principal.nameSprite = 'downleft';}
+                    //if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.y+=principalSpeedMove; Principal.position.x-=principalSpeedMove;Principal.nameSprite = 'downleft';}
                 break;
                 case "btn_down":
-                    if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.y+=principalSpeedMove;Principal.nameSprite = 'down';}
+                    if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.y+=principalSpeedMove;Principal.nameSprite = 'moveDown';}
                 break;
                 case "btn_downright":
-                    if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.y+=principalSpeedMove; Principal.position.x+=principalSpeedMove;Principal.nameSprite = 'downright';}
+                    //if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.y+=principalSpeedMove; Principal.position.x+=principalSpeedMove;Principal.nameSprite = 'downright';}
                 break;
             }
           }

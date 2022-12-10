@@ -87,12 +87,7 @@ class arrow extends character{
 
   }
   isActive(){if(this.nameSprite !== null){return true;}}
-  update(){/*
-    if(this.nameSprite == 'moveUp'){ this.position.y--;}
-    if(this.nameSprite == 'moveLeft'){ this.position.x--;}
-    if(this.nameSprite == 'moveDown'){ this.position.y++;}
-    if(this.nameSprite == 'moveRight'){ this.position.x++;}
-    /**/
+  update(){
     if(this.isActive()){
       if(this.nameSprite !== null){
         this.action(this.sprites[this.nameSprite]);
@@ -194,11 +189,38 @@ class btn_downright extends images {
     update(){ this.animation(); }
 }
 
+class text{
+    constructor({x,y,text}){
+      this.x = x
+      this.y = y
+      this.text = text
+      this.xAccumulated = 0
+      this.width = 0
+      this.height = 0
+      this.letters = []
+    }
+    load(){
+      var l;
+      this.xAccumulated = this.x;
+      for (var i = 0; i < this.text.length; i++) {
+        l = this.text.charAt(i);
+        this.letters.push(new images({x: this.xAccumulated, y: this.y, imgName:l}) );
+        this.xAccumulated += this.letters[i].width;
+      }
+    }
+    update(){
+      this.letters.forEach((item, i) => {
+        item.draw();
+      });
+    }
+}
+
 let tiles_layer0 = [];
 let tiles_layer1 = [];
 let backgrounds = [];
 let btns = [];
 let arrows = [];
+let texts = [];
 let Principal = null;
 
 function resetObjects(){
@@ -208,5 +230,6 @@ function resetObjects(){
   backgrounds = [];
   btns = [];
   arrows = [];
+  texts = [];
   Principal = null;
 }

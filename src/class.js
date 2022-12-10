@@ -7,6 +7,8 @@ class sprite{
     this.position ={x:x, y:y}                      //-scenario.y
     this.standartgridSize = standartgridSize       //tamanho padrao do tileset
     this.image = {
+      x:x,
+      y:y,
       img: imgName,                              //nome da imagem
       assetPos: {x:assX, y:assY},                //posicao do quadrante dentro do asset
       cropWidth: cropWidth,                      //largura do corte da imagem
@@ -28,8 +30,8 @@ class sprite{
         this.image.assetPos.y * this.standartgridSize, //this.image.cropHeight
         this.image.cropWidth,
         this.image.cropHeight,
-        this.position.x,
-        this.position.y,
+        this.position.x+this.image.x,
+        this.position.y+this.image.y,
         this.image.width,
         this.image.height,
       )
@@ -214,8 +216,8 @@ class tile {                                              //personagem
         this.sprites = {
           /*criar new sprite*/
           tile: new sprite({
-            x:x,
-            y:y,
+            x:0,
+            y:0,
             imgName: tilesetName,
             sndName: null,
             assX:gridX,
@@ -320,8 +322,8 @@ class character {                                              //personagem
         this.sprites = {
           /*criar new sprite*/
           moveUp: new sprite({
-            x:x,
-            y:y,
+            x:0,
+            y:0,
             imgName: tilesetName,
             sndName: null,
             assX:1,
@@ -338,8 +340,8 @@ class character {                                              //personagem
             standartgridSize: 64
           }),
           stopUp: new sprite({
-            x:x,
-            y:y,
+            x:0,
+            y:0,
             imgName: tilesetName,
             sndName: null,
             assX:0,
@@ -356,8 +358,8 @@ class character {                                              //personagem
             standartgridSize: 64
           }),
           moveLeft: new sprite({
-            x:x,
-            y:y,
+            x:0,
+            y:0,
             imgName: tilesetName,
             sndName: null,
             assX:1,
@@ -374,8 +376,8 @@ class character {                                              //personagem
             standartgridSize: 64
           }),
           stopLeft: new sprite({
-            x:x,
-            y:y,
+            x:0,
+            y:0,
             imgName: tilesetName,
             sndName: null,
             assX:0,
@@ -392,8 +394,8 @@ class character {                                              //personagem
             standartgridSize: 64
           }),
           stopDown: new sprite({
-            x:x,
-            y:y,
+            x:0,
+            y:0,
             imgName: tilesetName,
             sndName: null,
             assX:0,
@@ -410,8 +412,8 @@ class character {                                              //personagem
             standartgridSize: 64
           }),
           moveDown: new sprite({
-            x:x,
-            y:y,
+            x:0,
+            y:0,
             imgName: tilesetName,
             sndName: null,
             assX:1,
@@ -428,8 +430,8 @@ class character {                                              //personagem
             standartgridSize: 64
           }),
           stopRight: new sprite({
-            x:x,
-            y:y,
+            x:0,
+            y:0,
             imgName: tilesetName,
             sndName: null,
             assX:0,
@@ -446,8 +448,8 @@ class character {                                              //personagem
             standartgridSize: 64
           }),
           moveRight: new sprite({
-            x:x,
-            y:y,
+            x:0,
+            y:0,
             imgName: tilesetName,
             sndName: null,
             assX:1,
@@ -464,7 +466,7 @@ class character {                                              //personagem
             standartgridSize: 64
           }),
           attackUp: new sprite({
-            x:0,
+            x:-62,
             y:0,
             imgName: tilesetName,
             sndName: null,
@@ -482,7 +484,7 @@ class character {                                              //personagem
             standartgridSize: 64
           }),
           attackLeft: new sprite({
-            x:0,
+            x:-62,
             y:0,
             imgName: tilesetName,
             sndName: null,
@@ -500,7 +502,7 @@ class character {                                              //personagem
             standartgridSize: 64
           }),
           attackDown: new sprite({
-            x:0,
+            x:-62,
             y:0,
             imgName: tilesetName,
             sndName: null,
@@ -518,10 +520,11 @@ class character {                                              //personagem
             standartgridSize: 64
           }),
           attackRight: new sprite({
-            x:0,
+            x:-62,
             y:0,
             imgName: tilesetName,
             sndName: null,
+            assX:0,
             assY:31,
             cropWidth:gridSize*3,
             cropHeight:gridSize*3,
@@ -666,22 +669,22 @@ class character {                                              //personagem
           if(keys.a.pressed){this.attack();}
 
           if(scenario.c>scenario.cMin){
-              if(this.position.x<=canvas.width*0.33){scenario.x-=(principalSpeedMove/2);this.position.x+=(principalSpeedMove/2);}
+              if(this.position.x<=canvas.width*0.33){scenario.x-=(principalSpeedMove/2);this.position.x+=(principalSpeedMove);}
           } else {
               if(this.position.x<=0){this.position.x+=principalSpeedMove;}
           }
           if(scenario.y>(scenario.rMin*scenario.rHeight)){
-              if(this.position.y<=400*0.3){scenario.y-=principalSpeedMove;this.position.y+=principalSpeedMove;}
+              if(this.position.y<=400*0.3){scenario.y-=(principalSpeedMove/2);this.position.y+=principalSpeedMove;}
           } else {
               if(this.position.y<=400*0.15){this.position.y+=principalSpeedMove;}
           }
           if(scenario.x+canvas.width<=scenario.cWidth*scenario.cMax){
-               if(this.position.x+this.bodyColision.w>=canvas.width*0.66){scenario.x+=principalSpeedMove;this.position.x-=principalSpeedMove;}
+               if(this.position.x+this.bodyColision.w>=canvas.width*0.66){scenario.x+=(principalSpeedMove/2);this.position.x-=principalSpeedMove;}
           } else {
                if(this.position.x>=canvas.width-this.bodyColision.w-20){this.position.x-=principalSpeedMove;}
           }
           if(scenario.y+canvas.height<=scenario.rHeight){
-              if(this.position.y+this.bodyColision.h>=400*0.55){scenario.y+=principalSpeedMove;this.position.y-=principalSpeedMove;}
+              if(this.position.y+this.bodyColision.h>=400*0.55){scenario.y+=(principalSpeedMove/2);this.position.y-=principalSpeedMove;}
           } else {
               if(this.position.y>=400-this.bodyColision.h){this.position.y-=principalSpeedMove;}
           }
@@ -704,38 +707,40 @@ class character {                                              //personagem
     }
     points(number){                                            //pontos do objeto para colisao
         var ret = {x:null, y:null};
+        var w=0, h=0;
+        if(this.principal){w = scenario.x; h = scenario.y;}
         switch(number) {
           case 1:
-            ret.x=this.position.x+this.bodyColision.x+(this.bodyColision.w/2);
-            ret.y=this.position.y+this.bodyColision.y;
+            ret.x=this.position.x+this.bodyColision.x+(this.bodyColision.w/2)+w;
+            ret.y=this.position.y+this.bodyColision.y+h;
           break;
           case 2:
-            ret.x=this.position.x+this.bodyColision.x+this.bodyColision.w;
-            ret.y=this.position.y+this.bodyColision.y;
+            ret.x=this.position.x+this.bodyColision.x+this.bodyColision.w+w;
+            ret.y=this.position.y+this.bodyColision.y+h;
           break;
           case 3:
-            ret.x=this.position.x+this.bodyColision.x+this.bodyColision.w;
-            ret.y=this.position.y+this.bodyColision.y+(this.bodyColision.h/2);
+            ret.x=this.position.x+this.bodyColision.x+this.bodyColision.w+w;
+            ret.y=this.position.y+this.bodyColision.y+(this.bodyColision.h/2)+h;
           break;
           case 4:
-            ret.x=this.position.x+this.bodyColision.x+this.bodyColision.w;
-            ret.y=this.position.y+this.bodyColision.y+this.bodyColision.h;
+            ret.x=this.position.x+this.bodyColision.x+this.bodyColision.w+w;
+            ret.y=this.position.y+this.bodyColision.y+this.bodyColision.h+h;
           break;
           case 5:
-            ret.x=this.position.x+this.bodyColision.x+(this.bodyColision.w/2);
-            ret.y=this.position.y+this.bodyColision.y+this.bodyColision.h;
+            ret.x=this.position.x+this.bodyColision.x+(this.bodyColision.w/2)+w;
+            ret.y=this.position.y+this.bodyColision.y+this.bodyColision.h+h;
           break;
           case 6:
-            ret.x=this.position.x+this.bodyColision.x;
-            ret.y=this.position.y+this.bodyColision.y+this.bodyColision.h;
+            ret.x=this.position.x+this.bodyColision.x+w;
+            ret.y=this.position.y+this.bodyColision.y+this.bodyColision.h+h;
           break;
           case 7:
-            ret.x=this.position.x+this.bodyColision.x;
-            ret.y=this.position.y+this.bodyColision.y+(this.bodyColision.h/2);
+            ret.x=this.position.x+this.bodyColision.x+w;
+            ret.y=this.position.y+this.bodyColision.y+(this.bodyColision.h/2)+h;
           break;
           case 8:
-            ret.x=this.position.x+this.bodyColision.x;
-            ret.y=this.position.y+this.bodyColision.y;
+            ret.x=this.position.x+this.bodyColision.x+w;
+            ret.y=this.position.y+this.bodyColision.y+h;
           break;
 
         }
