@@ -101,8 +101,9 @@ class imageCanvas {
         {name: "7",                       src: this.img_src+"letters/7.png",	                sx:0,	sy:0,	width:57, 	height:140	},
         {name: "8",                       src: this.img_src+"letters/8.png",	                sx:0,	sy:0,	width:59, 	height:140	},
         {name: "9",                       src: this.img_src+"letters/9.png",	                sx:0,	sy:0,	width:56, 	height:140	},
+        {name: " ",                       src: this.img_src+"letters/espace.png",	            sx:0,	sy:0,	width:55, 	height:140	},
+      ];
 
-    ];
 
     preloadImage = function (img, onload, onerror) {
         for(var i = 0; i < Object.keys(img).length; i++){

@@ -21,9 +21,7 @@ function init(level){
               new background({x:0,y:0*(scenario.rHeight),imgName:'branco'})
             ]
             texts = [
-
-              new text({x:0,y:150,text:'0123456789'}),
-
+              new text({x:0,y:150,text:'in a kingdom far far away',height:80}),
             ]
             texts.forEach((item, i) => {
                 item.load();

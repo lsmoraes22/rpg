@@ -103,6 +103,22 @@ class images{
             this.height
         )
     }
+    drawChange(){
+        c.drawImage(
+            img.imgList[this.imgName].image,
+            this.crop.x,
+            this.crop.y,
+            this.crop.width,
+            this.crop.height,
+            this.position.x,
+            this.position.y,
+            this.width,
+            this.height
+        )
+        c.globalCompositeOperation = "source-in";
+        c.fillStyle = "#09f";
+        c.fillRect(0, 0, canvas.width, canvas.height);
+    }
     animation(){
         this.draw();
     }

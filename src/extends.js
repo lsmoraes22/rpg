@@ -190,13 +190,12 @@ class btn_downright extends images {
 }
 
 class text{
-    constructor({x,y,text}){
+    constructor({x,y,text,height}){
       this.x = x
       this.y = y
       this.text = text
       this.xAccumulated = 0
-      this.width = 0
-      this.height = 0
+      this.height = height
       this.letters = []
     }
     load(){
@@ -205,12 +204,14 @@ class text{
       for (var i = 0; i < this.text.length; i++) {
         l = this.text.charAt(i);
         this.letters.push(new images({x: this.xAccumulated, y: this.y, imgName:l}) );
+        this.letters[i].width = this.letters[i].width*(this.height / this.letters[i].height)
+        this.letters[i].height = this.height;
         this.xAccumulated += this.letters[i].width;
       }
     }
     update(){
       this.letters.forEach((item, i) => {
-        item.draw();
+        item.drawChange();
       });
     }
 }
