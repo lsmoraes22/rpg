@@ -11,44 +11,57 @@ function init(level){
             fulls = [ new full_screen({x:canvas.width-70, y:10}), ]
         break;
         case 0:
-            //if(!isNull(music)){music.stop();}
             resetObjects();
             scenario.cMin=0;
             scenario.cMax=2;
             scenario.rMin=-1;
             scenario.rMax=0;
             backgrounds = [
-              new background({x:0,y:0*(scenario.rHeight),imgName:'branco'})
+              new background({x:0,y:-1*(scenario.rHeight),imgName:'scene1'})
             ]
+            enemys = [
+              new enemy({x:200,y:100, tilesetName: "skeleton_arow", isBoss: false}),
+              new enemy({x:300,y:-100,tilesetName: "minotauro",     isBoss: true}),
+            ]
+            /*
             texts = [
-              new text({x:0,y:150,text:'in a kingdom far far away',height:80}),
+              new write({x:100, y:100, px:50, color:'#fff', family:'Comic Sans MS', text:'Lucas Sangiorato Moraes', bold:false }),
             ]
-            texts.forEach((item, i) => {
-                item.load();
-            });
 
             /*
+            shaps = [
+              new roundRectFill({x:300, y:200, width:50, height:50, color:'red', border_size:10, border_color:'black', radius:10 }),
+              new rectFill({x:100, y:100, width:50, height:50, color:'red', border_size:10, border_color:'#000' }),
+              new circleFill({x:100, y:100, radius:10, color:'yellow', border_size:2, border_color:'#00FF00'}),
+              new triangle_arrow_right_fill({x:200, y:200, width:50, height:50, color:'#37B', border_size:10, border_color:'#333' }),
+           ]
+            //texts.forEach((item, i) => { item.load(); });
+            /**/
             tiles_layer1 = [
-              new map({x:7*(gridSize/2), y:6*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:0}),
-              new map({x:8*(gridSize/2), y:6*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:0}),
-              new map({x:9*(gridSize/2), y:6*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:0}),
-              new map({x:10*(gridSize/2), y:6*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:0}),
-              new map({x:11*(gridSize/2), y:6*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:0}),
-              new map({x:12*(gridSize/2), y:6*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:0}),
+              new map({x:17*(gridSize/2), y:-1*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:0}),
+/*
+              new map({x:18*(gridSize/2), y:-1*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:0}),
+              new map({x:19*(gridSize/2), y:-1*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:0}),
+              new map({x:20*(gridSize/2), y:-1*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:0}),
+              new map({x:21*(gridSize/2), y:-1*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:0}),
+              new map({x:22*(gridSize/2), y:-1*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:0}),
+              /**/
             ]
             tiles_layer0 = [
-              new map({x:7*(gridSize/2), y:7*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:1}),
-              new map({x:8*(gridSize/2), y:7*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:1}),
-              new map({x:9*(gridSize/2), y:7*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:1}),
-              new map({x:10*(gridSize/2), y:7*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:1}),
-              new map({x:11*(gridSize/2), y:7*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:1}),
-              new map({x:12*(gridSize/2), y:7*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:1}),
+              new map({x:17*(gridSize/2), y:0*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:1}),
+/*
+              new map({x:18*(gridSize/2), y:0*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:1}),
+              new map({x:19*(gridSize/2), y:0*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:1}),
+              new map({x:20*(gridSize/2), y:0*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:1}),
+              new map({x:21*(gridSize/2), y:0*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:1}),
+              new map({x:22*(gridSize/2), y:0*(gridSize/2), tilesetName:'tileset-autumn', gridX:0, gridY:1}),
+/**/
             ]
+            FullScreen = new images({x: canvas.width-55, y: 10, imgName:"full_screen"});
             arrows = [ new arrow({x:200,y:200}), ]
-
-            Principal = new principal({x:50,y:150, tilesetName: 'greenGoblin'});
             btns = create_joystick('b');
             /**/
+            Principal = new principal({x:50,y:150, tilesetName: 'greenGoblin'});
         break;
     }
 }
@@ -69,254 +82,4 @@ function create_joystick(color){
         new btn_downright({x:refjst.x+lBtn+lBtn,y:refjst.y+lBtn+lBtn, color:color}),
     ];
     return btns;
-}
-function lava1_create(x,y,number){
-    var arr = []
-    for (let i = 0; i < number; i++) {
-        arr.push(new lava({x: (x+i)*gridSize, y:y*gridSize, type: 'surface'}));
-    }
-    return arr;
-}
-function lava2_create(x,y,number){
-    var arr = []
-    for (let i = 0; i < number; i++) {
-        arr.push(new lava({x: (x+i)*gridSize, y:y*gridSize, type: 'deep'}));
-    }
-    return arr;
-}
-function water1_create(x,y,number){
-    var arr = []
-    for (let i = 0; i < number; i++) {
-        arr.push(new water1({x: (x+i)*gridSize, y:y*gridSize}));
-    }
-    return arr;
-}
-function water2_create(x,y,number){
-    var arr = []
-    for (let i = 0; i < number; i++) {
-        arr.push(new water2({x: (x+i)*gridSize, y:y*gridSize}));
-    }
-    return arr;
-}
-function create_brownHill1(x,y,number){
-    var arr = []
-    for (let i = 0; i < number; i++) {
-        arr.push(
-            (i==0 ?
-                new map({x:x*gridSize, y:(y+i)*gridSize, tileName: 'brownHill1'})
-            :
-                new map({x:x*gridSize, y:(y+i)*gridSize, tileName: 'brownHill2'})
-            )
-        );
-    }
-    return arr;
-}
-function create_greenHill(x,y,number){
-    var arr = []
-    for (let i = 0; i < number; i++) {
-        arr.push(
-            (i==0 ?
-                new map({x:x*gridSize, y:(y+i)*gridSize, tileName: 'greenHill1'})
-            :
-                new map({x:x*gridSize, y:(y+i)*gridSize, tileName: 'greenHill2'})
-            )
-        );
-    }
-    return arr;
-}
-function create_building(x,y,number){
-    var arr = []
-    for (let i = 0; i < number; i++) {
-        arr.push(
-            (i==(number-1) ?
-                new building2({x:x*gridSize, y:(y+i)*gridSize})
-            :
-                new building1({x:x*gridSize, y:(y+i)*gridSize})
-            )
-        );
-    }
-    return arr;
-}
-function create_alien_building(x,y,number){
-    var arr = []
-    for (let i = 0; i < number; i++) {
-        arr.push(
-            (i==(number-1) ?
-                new alien_building3({x:x*gridSize, y:(y+i)*gridSize})
-            :
-                (i==0 ?
-                    new alien_building1({x:x*gridSize, y:(y+i)*gridSize})
-                :
-                    new alien_building2({x:x*gridSize, y:(y+i)*gridSize})
-                )
-            )
-        );
-    }
-    return arr;
-}
-function create_shock_v(x,y,number,continuous){
-    var arr = []
-    for (let i = 0; i < number; i++) {
-        arr.push(
-            (i==(number-1) ?
-                new shock_v({x:x*gridSize, y:(y+i)*gridSize, shockNumber:3,continuous:continuous})
-            :
-                ((i==0) ?
-                    new shock_v({x:x*gridSize, y:(y+i)*gridSize, shockNumber:1,continuous:continuous})
-                :
-                    new shock_v({x:x*gridSize, y:(y+i)*gridSize, shockNumber:2,continuous:continuous})
-                )
-            )
-        );
-    }
-    return arr;
-}
-function create_shock_h(x,y,number,continuous){
-    var arr = []
-    for (let i = 0; i < number; i++) {
-        arr.push(
-            (i==(number-1) ?
-                new shock_h({x:(x+i)*gridSize, y:y*gridSize, shockNumber:3,continuous:continuous})
-            :
-                ((i==0) ?
-                    new shock_h({x:(x+i)*gridSize, y:y*gridSize, shockNumber:1,continuous:continuous})
-                :
-                    new shock_h({x:(x+i)*gridSize, y:y*gridSize, shockNumber:2,continuous:continuous})
-                )
-            )
-        );
-    }
-    return arr;
-}
-function create_greenMountain(x,y,numberX,numberY){
-
-    var arr = []
-    for (let i2 = 0; i2 < numberY; i2++) {
-        for (let i = 0; i < numberX; i++) {
-            arr.push(
-                (i2==(numberY-1) ?
-                    (i==(numberX-1) ?
-                        new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'greenTile9' })
-                    :
-                        ((i==0) ?
-                            new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'greenTile7' })
-                        :
-                            new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'greenTile8' })
-                        )
-                    )
-                :
-                    (i2==0 ?
-                        (i==(numberX-1) ?
-                            new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'greenTile3' })
-                        :
-                            ((i==0) ?
-                                new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'greenTile1' })
-                            :
-                                new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'greenTile2' })
-                            )
-                        )
-                    :
-                        (i==(numberX-1) ?
-                            new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'greenTile6' })
-                        :
-                            ((i==0) ?
-                                new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'greenTile4' })
-                            :
-                                new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'greenTile5' })
-                            )
-                        )
-                    )
-                )
-            );
-        }
-    }
-    return arr;
-}
-function create_whiteMountain(x,y,numberX,numberY){
-
-    var arr = []
-    for (let i2 = 0; i2 < numberY; i2++) {
-        for (let i = 0; i < numberX; i++) {
-            arr.push(
-                (i2==(numberY-1) ?
-                    (i==(numberX-1) ?
-                        new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'whiteTile9' })
-                    :
-                        ((i==0) ?
-                            new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'whiteTile7' })
-                        :
-                            new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'whiteTile8' })
-                        )
-                    )
-                :
-                    (i2==0 ?
-                        (i==(numberX-1) ?
-                            new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'whiteTile3' })
-                        :
-                            ((i==0) ?
-                                new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'whiteTile1' })
-                            :
-                                new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'whiteTile2' })
-                            )
-                        )
-                    :
-                        (i==(numberX-1) ?
-                            new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'whiteTile6' })
-                        :
-                            ((i==0) ?
-                                new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'whiteTile4' })
-                            :
-                                new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'whiteTile5' })
-                            )
-                        )
-                    )
-                )
-            );
-        }
-    }
-    return arr;
-}
-function create_brownMountain(x,y,numberX,numberY){
-
-    var arr = []
-    for (let i2 = 0; i2 < numberY; i2++) {
-        for (let i = 0; i < numberX; i++) {
-            arr.push(
-                (i2==(numberY-1) ?
-                    (i==(numberX-1) ?
-                        new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'brownTile9' })
-                    :
-                        ((i==0) ?
-                            new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'brownTile7' })
-                        :
-                            new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'brownTile8' })
-                        )
-                    )
-                :
-                    (i2==0 ?
-                        (i==(numberX-1) ?
-                            new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'brownTile3' })
-                        :
-                            ((i==0) ?
-                                new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'brownTile1' })
-                            :
-                                new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'brownTile2' })
-                            )
-                        )
-                    :
-                        (i==(numberX-1) ?
-                            new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'brownTile6' })
-                        :
-                            ((i==0) ?
-                                new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'brownTile4' })
-                            :
-                                new map({x:(x+i)*gridSize, y:(y+i2)*gridSize, tileName: 'brownTile5' })
-                            )
-                        )
-                    )
-                )
-            );
-        }
-    }
-    return arr;
 }

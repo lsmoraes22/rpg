@@ -27,7 +27,7 @@ class sprite{
       c.drawImage(
         img.imgList[this.image.img].image,
         (this.image.assetPos.x * this.image.cropWidth ) + (Math.floor(this.frames*this.speedAnimation) * this.image.cropWidth), //this.image.cropWidth
-        this.image.assetPos.y * this.standartgridSize, //this.image.cropHeight
+        this.image.assetPos.y * this.standartgridSize,
         this.image.cropWidth,
         this.image.cropHeight,
         this.position.x+this.image.x,
@@ -77,6 +77,334 @@ class sprite{
   }
 }
 
+class write{
+  constructor({x, y, px, color, family, text, bold}){
+    this.position = {x:x, y:y}
+    this.px = px
+    this.family = family
+    this.text = text
+    this.bold = ( bold ? 'bold ' : '' )
+    this.color = color
+  }
+  update(){
+    c.font = this.bold+this.px+"px "+this.family;
+    c.fillStyle = this.color;
+    c.fillText(this.text, this.position.x, this.position.y);
+  }
+}
+
+class rectFill{
+  constructor({x, y, width, height, color, border_size, border_color}){
+    this.position = {x:x, y:y}
+    this.width = width
+    this.height = height
+    this.color = color
+    this.border_size = border_size
+    this.border_color = border_color
+  }
+  update(){
+    if(this.border_size>0){
+      c.fillStyle = this.border_color;
+      c.fillRect(this.position.x-this.border_size, this.position.y-this.border_size, this.width+(this.border_size*2), this.height+(this.border_size*2));
+    }
+    c.fillStyle = this.color;
+    c.fillRect(this.position.x, this.position.y, this.width, this.height);
+  }
+}
+
+
+class rectStroke{
+  constructor({x, y, width, height, border_color, border_size}){
+    this.position = {x:x, y:y}
+    this.width = width
+    this.height = height
+    this.border_size = border_size
+    this.border_color = border_color
+  }
+  update(){
+    c.strokeStyle = this.color;
+    c.lineWidth = this.border_size;
+    c.strokeRect(this.position.x, this.position.y, this.width, this.height);
+  }
+}
+
+class roundRectStroke{
+  constructor({x, y, width, height, border_size, border_color, radius}){
+    this.position = {x:x, y:y}
+    this.width = width
+    this.height = height
+    this.border_size = border_size
+    this.border_color = border_color
+    this.radius = radius
+  }
+  update(){
+    c.strokeStyle = this.border_color;
+    c.lineWidth = this.border_size;
+    c.roundRect(this.position.x, this.position.y, this.width, this.height, this.radius).stroke();
+  }
+}
+
+class roundRectFill{
+  constructor({x, y, width, height, color, border_size, border_color, radius}){
+    this.position = {x:x, y:y}
+    this.width = width
+    this.height = height
+    this.color = color
+    this.border_size = border_size
+    this.border_color = border_color
+    this.radius = radius
+  }
+  update(){
+    if (this.border_size>0) {
+      c.fillStyle = this.border_color;
+      c.roundRect(
+        this.position.x-this.border_size,
+        this.position.y-this.border_size,
+        this.width+(this.border_size*2),
+        this.height+(this.border_size*2),
+        this.radius+this.border_size
+      ).fill();
+    }
+    c.fillStyle = this.color;
+    c.roundRect(this.position.x, this.position.y, this.width, this.height, this.radius).fill();
+  }
+}
+
+CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+  if (w < 2 * r) r = w / 2;
+  if (h < 2 * r) r = h / 2;
+  this.beginPath();
+  this.moveTo(x+r, y);
+  this.arcTo(x+w, y,   x+w, y+h, r);
+  this.arcTo(x+w, y+h, x,   y+h, r);
+  this.arcTo(x,   y+h, x,   y,   r);
+  this.arcTo(x,   y,   x+w, y,   r);
+  this.closePath();
+  return this;
+}
+
+class triangle_arrow_up_fill{
+  constructor({x, y, width, height, color, border_size, border_color}){
+    this.position = {x:x, y:y}
+    this.width = width
+    this.height = height
+    this.color = color
+    this.border_size = border_size
+    this.border_color = border_color
+  }
+  update(){
+    if(this.border_size>0){
+      c.beginPath();
+      c.moveTo(this.position.x+(this.width/2), this.position.y-this.border_size);
+      c.lineTo(this.position.x-this.border_size, this.position.y+this.height+(this.border_size/2));
+      c.lineTo(this.position.x+this.width+this.border_size, this.position.y+this.height+(this.border_size/2));
+      c.fillStyle = this.border_color;
+      c.fill();
+      c.closePath();
+    }
+    c.beginPath();
+    c.moveTo(this.position.x+(this.width/2), this.position.y);
+    c.lineTo(this.position.x, this.position.y+this.height);
+    c.lineTo(this.position.x+this.width, this.position.y+this.height);
+    c.fillStyle = this.color;
+    c.fill();
+    c.closePath();
+  }
+}
+
+class triangle_arrow_up_stroke{
+  constructor({x, y, width, height, border_size, border_color}){
+    this.position = {x:x, y:y}
+    this.width = width
+    this.height = height
+    this.border_size = border_size
+    this.border_color = border_color
+  }
+  update(){
+    c.beginPath();
+    c.moveTo(this.position.x+(this.width/2), this.position.y);
+    c.lineTo(this.position.x, this.position.y+this.height);
+    c.lineTo(this.position.x+this.width, this.position.y+this.height);
+    c.closePath();
+    c.lineWidth = this.border_size
+    c.strokeStyle = this.border_color;
+    c.stroke();
+  }
+}
+
+class triangle_arrow_down_fill{
+  constructor({x, y, width, height, color, border_size, border_color}){
+    this.position = {x:x, y:y}
+    this.width = width
+    this.height = height
+    this.color = color
+    this.border_size = border_size
+    this.border_color = border_color
+  }
+  update(){
+    if(this.border_size>0){
+      c.beginPath();
+      c.moveTo(this.position.x-(this.border_size/2), this.position.y-(this.border_size/2));
+      c.lineTo(this.position.x+this.width+(this.border_size/2), this.position.y-(this.border_size/2));
+      c.lineTo(this.position.x+(this.width/2), this.position.y+this.height+this.border_size);
+      c.fillStyle = this.border_color;
+      c.fill();
+      c.closePath();
+    }
+    c.beginPath();
+    c.moveTo(this.position.x, this.position.y);
+    c.lineTo(this.position.x+this.width, this.position.y);
+    c.lineTo(this.position.x+(this.width/2), this.position.y+this.height);
+    c.closePath();
+    c.fillStyle = this.color;
+    c.fill();
+  }
+}
+
+class triangle_arrow_down_stroke{
+  constructor({x, y, width, height, border_size, border_color}){
+    this.position = {x:x, y:y}
+    this.width = width
+    this.height = height
+    this.border_size = border_size
+    this.border_color = border_color
+  }
+  update(){
+    c.beginPath();
+    c.moveTo(this.position.x, this.position.y);
+    c.lineTo(this.position.x+this.width, this.position.y);
+    c.lineTo(this.position.x+(this.width/2), this.position.y+this.height);
+    c.closePath();
+    c.lineWidth = this.border_size
+    c.strokeStyle = this.border_color;
+    c.stroke();
+  }
+}
+
+
+class triangle_arrow_left_stroke{
+  constructor({x, y, width, height, border_size, border_color}){
+    this.position = {x:x, y:y}
+    this.width = width
+    this.height = height
+    this.border_size = border_size
+    this.border_color = border_color
+  }
+  update(){
+    c.beginPath();
+    c.moveTo(this.position.x, this.position.y+(this.width/2));
+    c.lineTo(this.position.x+this.width, this.position.y);
+    c.lineTo(this.position.x+this.width, this.position.y+this.height);
+    c.closePath();
+    c.lineWidth = this.border_size
+    c.strokeStyle = this.border_color;
+    c.stroke();
+  }
+}
+
+class triangle_arrow_left_fill{
+  constructor({x, y, width, height, color, border_size, border_color}){
+    this.position = {x:x, y:y}
+    this.width = width
+    this.height = height
+    this.color = color
+    this.border_size = border_size
+    this.border_color = border_color
+  }
+  update(){
+    if(this.border_size>0){
+      c.beginPath();
+      c.moveTo(this.position.x-(this.border_size/2), this.position.y+(this.width/2));
+      c.lineTo(this.position.x+this.width+(this.border_size/2), this.position.y-(this.border_size/2));
+      c.lineTo(this.position.x+this.width+(this.border_size/2), this.position.y+this.height+(this.border_size/2));
+      c.fillStyle = this.border_color;
+      c.fill();
+      c.closePath();
+    }
+    c.beginPath();
+    c.moveTo(this.position.x, this.position.y+(this.width/2));
+    c.lineTo(this.position.x+this.width, this.position.y);
+    c.lineTo(this.position.x+this.width, this.position.y+this.height);
+    c.fillStyle = this.color;
+    c.closePath();
+    c.fill();
+  }
+}
+
+class triangle_arrow_right_stroke{
+  constructor({x, y, width, height, border_size, border_color}){
+    this.position = {x:x, y:y}
+    this.width = width
+    this.height = height
+    this.border_size = border_size
+    this.border_color = border_color
+  }
+  update(){
+    c.beginPath();
+    c.moveTo(this.position.x+this.width, this.position.y+(this.width/2));
+    c.lineTo(this.position.x, this.position.y);
+    c.lineTo(this.position.x, this.position.y+this.height);
+    c.closePath();
+    c.lineWidth = this.border_size
+    c.strokeStyle = this.border_color;
+    c.stroke();
+  }
+}
+
+class triangle_arrow_right_fill{
+  constructor({x, y, width, height, color, border_size, border_color}){
+    this.position = {x:x, y:y}
+    this.width = width
+    this.height = height
+    this.color = color
+    this.border_size = border_size
+    this.border_color = border_color
+  }
+  update(){
+    if(this.border_size>0){
+      c.beginPath();
+      c.moveTo(this.position.x-(this.border_size/2), this.position.y-(this.border_size/2));
+      c.lineTo(this.position.x-(this.border_size/2), this.position.y+this.height+(this.border_size/2));
+      c.lineTo(this.position.x+this.width+(this.border_size/2), this.position.y+(this.width/2));
+      c.fillStyle = this.border_color;
+      c.fill();
+      c.closePath();
+    }
+    c.beginPath();
+    c.moveTo(this.position.x, this.position.y);
+    c.lineTo(this.position.x, this.position.y+this.height);
+    c.lineTo(this.position.x+this.width, this.position.y+(this.width/2));
+    c.fillStyle = this.color;
+    c.closePath();
+    c.fill();
+  }
+}
+
+class circleFill{
+  constructor({x, y, radius, color, border_size, border_color}){
+    this.position = {x:x, y:y}
+    this.color = color
+    this.radius = radius
+    this.border_size = border_size
+    this.border_color = border_color
+  }
+  update(){
+    if(this.border_size>0){
+      c.fillStyle = this.border_color;
+      c.beginPath();
+      c.arc(this.position.x,this.position.y,this.radius+this.border_size,0,Math.PI*2,true);
+      c.fill();
+      c.closePath();
+    }
+    c.beginPath();
+    c.fillStyle = this.color;
+    c.arc(this.position.x,this.position.y,this.radius,0,Math.PI*2,true);
+    c.fill();
+    c.closePath();
+  }
+}
+
+
 class images{
     constructor({x, y, imgName}){
         this.imgName = imgName
@@ -102,22 +430,6 @@ class images{
             this.width,
             this.height
         )
-    }
-    drawChange(){
-        c.drawImage(
-            img.imgList[this.imgName].image,
-            this.crop.x,
-            this.crop.y,
-            this.crop.width,
-            this.crop.height,
-            this.position.x,
-            this.position.y,
-            this.width,
-            this.height
-        )
-        c.globalCompositeOperation = "source-in";
-        c.fillStyle = "#09f";
-        c.fillRect(0, 0, canvas.width, canvas.height);
     }
     animation(){
         this.draw();
@@ -172,7 +484,6 @@ class images{
             ret.x=this.position.x+this.bodyColision.x;
             ret.y=this.position.y+this.bodyColision.y;
           break;
-
         }
         return ret;
     }
@@ -225,8 +536,8 @@ class sound{
 class tile {                                              //personagem
     constructor({x, y, tilesetName, gridX, gridY}){
         this.position = {x: x, y: y}
-        this.width = gridSize
-        this.height = gridSize
+        this.width = gridSize/2
+        this.height = gridSize/2
         this.currentSprite = null                              //sprite atual
         this.tilesetName = tilesetName                         //nome da imagem que contem o tileset
         this.sprites = {
@@ -262,19 +573,17 @@ class tile {                                              //personagem
         this.currentSprite = sprt;
         this.currentSprite.position.x = this.position.x-scenario.x;
         this.currentSprite.position.y = this.position.y-scenario.y;
-        //if(this.currentSprite.position.x<canvas.width*2 && this.currentSprite.position.x>-canvas.width && this.currentSprite.position.y<canvas.height*2 && this.currentSprite.position.y>-canvas.height ){
           if(this.currentSprite.animation()){
             if(this.sprites[this.nameSprite].image.end){
               this.nameSprite = this.sprites[this.nameSprite].image.next;
               this.currentSprite = this.sprites[this.nameSprite];
             }
           }
-        //}
     }
     colision(x,y){
         var colision = {position:{
-          x: this.position.x,
-          y:this.position.y
+          x: this.currentSprite.position.x,
+          y:this.currentSprite.position.y
         }
     }
         if(x>=colision.position.x &&
@@ -322,10 +631,52 @@ class tile {                                              //personagem
             assX:0,
             ret.y=this.position.y+this.bodyColision.y;
           break;
-
         }
         return ret;
     }
+}
+
+class liveBarr2 extends images {
+    constructor({x,y}){
+      this.position = {x:x,y:y}
+      this.imgName = "liveBarr1"
+      this.width = this.imgList[this.imgName].image.width
+      this.height = this.imgList[this.imgName].image.height
+    }
+    draw(){
+        c.drawImage(
+            img.imgList[this.imgName].image,
+            0,
+            0,
+            this.width,
+            this.height,
+            this.position.x,
+            this.position.y,
+            this.width,
+            this.height
+        )
+    }
+}
+
+class liveBarr1 extends images {
+    constructor({x,y,cropWidth,cropHeight}){
+      this.position = {x:x,y:y}
+      this.imgName = "liveBarr2"
+      this.crop = {width:cropWidth, height:cropHeight}
+    }
+      draw(){
+          c.drawImage(
+              img.imgList[this.imgName].image,
+              0,
+              0,
+              this.crop.width,
+              this.crop.height,
+              this.position.x,
+              this.position.y,
+              this.crop.width,
+              this.crop.height
+          )
+      }
 }
 
 class character {                                              //personagem
@@ -483,11 +834,11 @@ class character {                                              //personagem
           }),
           attackUp: new sprite({
             x:-62,
-            y:0,
+            y:-62,
             imgName: tilesetName,
             sndName: null,
             assX:0,
-            assY:22,
+            assY:21,
             cropWidth:gridSize*3,
             cropHeight:gridSize*3,
             width:gridSize*3,
@@ -501,11 +852,11 @@ class character {                                              //personagem
           }),
           attackLeft: new sprite({
             x:-62,
-            y:0,
+            y:-62,
             imgName: tilesetName,
             sndName: null,
             assX:0,
-            assY:25,
+            assY:24,
             cropWidth:gridSize*3,
             cropHeight:gridSize*3,
             width:gridSize*3,
@@ -519,11 +870,11 @@ class character {                                              //personagem
           }),
           attackDown: new sprite({
             x:-62,
-            y:0,
+            y:-62,
             imgName: tilesetName,
             sndName: null,
             assX:0,
-            assY:28,
+            assY:27,
             cropWidth:gridSize*3,
             cropHeight:gridSize*3,
             width:gridSize*3,
@@ -537,11 +888,11 @@ class character {                                              //personagem
           }),
           attackRight: new sprite({
             x:-62,
-            y:0,
+            y:-62,
             imgName: tilesetName,
             sndName: null,
             assX:0,
-            assY:31,
+            assY:30,
             cropWidth:gridSize*3,
             cropHeight:gridSize*3,
             width:gridSize*3,
@@ -645,6 +996,30 @@ class character {                                              //personagem
           }),
         }
         this.principal = false                                 //personagem controlado pelo joystick
+        this.attackColision = {
+          x:null,
+          y:null,
+          w:null,
+          h:null,
+          posSpriteX: null,
+          posSpriteY: null,
+          loadSpritePos: function(posSpriteX,posSpriteY){
+            this.posSpriteX = posSpriteX;
+            this.posSpriteY = posSpriteY;
+          },
+          colision: function(x,y){
+            if(
+              x>this.x+this.posSpriteX &&
+              x<this.x+this.posSpriteX+this.w &&
+              y>this.y+this.posSpriteY &&
+              y<this.y+this.posSpriteY+this.h
+            ){
+              return true;
+            }else{
+              return false;
+            }
+          }
+        }
     }
     setNextSprite(sprt){
       this.currentSprite = sprt;
@@ -652,16 +1027,57 @@ class character {                                              //personagem
     die(){
       this.nameSprite = 'die';
     }
+    isAlive(){if(this.nameSprite !== null){return true;}}
+    isAttack(){
+      if(this.nameSprite == 'attackUp' || this.nameSprite == 'attackDown' ||
+         this.nameSprite == 'attackRight' || this.nameSprite == 'attackLeft'){
+           return true;
+         } else {
+           return false;
+         }
+    }
     attack(){
       if(this.weaponClass == 'melee'){
         if(this.nameSprite=='moveUp' || this.nameSprite=='stopUp'){
             this.nameSprite = 'attackUp';
-        } else if (this.nameSprite=='moveLeft' || this.nameSprite=='stopLeft') {
+            this.attackColision.loadSpritePos(
+              this.position.x+this.sprites[this.nameSprite].image.x,
+              this.position.y+this.sprites[this.nameSprite].image.y
+            );
+            this.attackColision.w = 92;
+            this.attackColision.h = 36;
+            this.attackColision.x = 60;
+            this.attackColision.y = 60;
+          } else if (this.nameSprite=='moveLeft' || this.nameSprite=='stopLeft') {
             this.nameSprite = 'attackLeft';
+            this.attackColision.loadSpritePos(
+              this.position.x+this.sprites[this.nameSprite].image.x,
+              this.position.y+this.sprites[this.nameSprite].image.y
+            );
+            this.attackColision.w = 50;
+            this.attackColision.h = 52;
+            this.attackColision.x = 45;
+            this.attackColision.y = 80;
         } else if (this.nameSprite=='moveDown' || this.nameSprite=='stopDown') {
             this.nameSprite = 'attackDown';
+            this.attackColision.loadSpritePos(
+              this.position.x+this.sprites[this.nameSprite].image.x,
+              this.position.y+this.sprites[this.nameSprite].image.y
+            );
+            this.attackColision.w = 82;
+            this.attackColision.h = 56;
+            this.attackColision.x = 70;
+            this.attackColision.y = 96;
         } else if (this.nameSprite=='moveRight' || this.nameSprite=='stopRight') {
             this.nameSprite = 'attackRight';
+            this.attackColision.loadSpritePos(
+              this.position.x+this.sprites[this.nameSprite].image.x,
+              this.position.y+this.sprites[this.nameSprite].image.y
+            );
+            this.attackColision.w = 50;
+            this.attackColision.h = 52;
+            this.attackColision.x = 96;
+            this.attackColision.y = 80;
         }
       } if(this.weaponClass == 'ranged'){
         if(this.nameSprite=='moveUp' || this.nameSprite=='stopUp'){
@@ -683,7 +1099,6 @@ class character {                                              //personagem
           if(keys.up.pressed){this.position.y-=principalSpeedMove; this.nameSprite = 'moveUp'} else
           if(keys.down.pressed){this.position.y+=principalSpeedMove; this.nameSprite = 'moveDown'}
           if(keys.a.pressed){this.attack();}
-
           if(scenario.c>scenario.cMin){
               if(this.position.x<=canvas.width*0.33){scenario.x-=(principalSpeedMove/2);this.position.x+=(principalSpeedMove);}
           } else {
@@ -704,9 +1119,13 @@ class character {                                              //personagem
           } else {
               if(this.position.y>=400-this.bodyColision.h){this.position.y-=principalSpeedMove;}
           }
-      }
-      this.currentSprite.position.x = this.position.x;
-      this.currentSprite.position.y = this.position.y;
+          this.currentSprite.position.x = this.position.x;
+          this.currentSprite.position.y = this.position.y;
+        }else{
+          this.currentSprite.position.x = this.position.x-scenario.x;
+          this.currentSprite.position.y = this.position.y-scenario.y;
+
+        }
       if(
           this.currentSprite.position.x<canvas.width*2 &&
           this.currentSprite.position.x>-canvas.width &&
@@ -721,44 +1140,55 @@ class character {                                              //personagem
         }
       }
     }
+    colision(x,y){
+      if(this.currentSprite!=null){
+        if(x>=this.currentSprite.position.x + this.bodyColision.x &&
+           x<=this.currentSprite.position.x + this.bodyColision.x + this.bodyColision.w &&
+           y>=this.currentSprite.position.y + this.bodyColision.y &&
+           y<=this.currentSprite.position.y + this.bodyColision.y + this.bodyColision.h ){
+             return true;
+        }else{
+             return false;
+        }
+      }
+    }
     points(number){                                            //pontos do objeto para colisao
         var ret = {x:null, y:null};
         var w=0, h=0;
-        if(this.principal){w = scenario.x; h = scenario.y;}
+        if(!this.principal){w = scenario.x; h = scenario.y;}
         switch(number) {
           case 1:
-            ret.x=this.position.x+this.bodyColision.x+(this.bodyColision.w/2)+w;
-            ret.y=this.position.y+this.bodyColision.y+h;
+            ret.x=this.position.x+this.bodyColision.x+(this.bodyColision.w/2)-w;
+            ret.y=this.position.y+this.bodyColision.y-h;
           break;
           case 2:
-            ret.x=this.position.x+this.bodyColision.x+this.bodyColision.w+w;
-            ret.y=this.position.y+this.bodyColision.y+h;
+            ret.x=this.position.x+this.bodyColision.x+this.bodyColision.w-w;
+            ret.y=this.position.y+this.bodyColision.y-h;
           break;
           case 3:
-            ret.x=this.position.x+this.bodyColision.x+this.bodyColision.w+w;
-            ret.y=this.position.y+this.bodyColision.y+(this.bodyColision.h/2)+h;
+            ret.x=this.position.x+this.bodyColision.x+this.bodyColision.w-w;
+            ret.y=this.position.y+this.bodyColision.y+(this.bodyColision.h/2)-h;
           break;
           case 4:
-            ret.x=this.position.x+this.bodyColision.x+this.bodyColision.w+w;
-            ret.y=this.position.y+this.bodyColision.y+this.bodyColision.h+h;
+            ret.x=this.position.x+this.bodyColision.x+this.bodyColision.w-w;
+            ret.y=this.position.y+this.bodyColision.y+this.bodyColision.h-h;
           break;
           case 5:
-            ret.x=this.position.x+this.bodyColision.x+(this.bodyColision.w/2)+w;
-            ret.y=this.position.y+this.bodyColision.y+this.bodyColision.h+h;
+            ret.x=this.position.x+this.bodyColision.x+(this.bodyColision.w/2)-w;
+            ret.y=this.position.y+this.bodyColision.y+this.bodyColision.h-h;
           break;
           case 6:
-            ret.x=this.position.x+this.bodyColision.x+w;
-            ret.y=this.position.y+this.bodyColision.y+this.bodyColision.h+h;
+            ret.x=this.position.x+this.bodyColision.x-w;
+            ret.y=this.position.y+this.bodyColision.y+this.bodyColision.h-h;
           break;
           case 7:
-            ret.x=this.position.x+this.bodyColision.x+w;
-            ret.y=this.position.y+this.bodyColision.y+(this.bodyColision.h/2)+h;
+            ret.x=this.position.x+this.bodyColision.x-w;
+            ret.y=this.position.y+this.bodyColision.y+(this.bodyColision.h/2)-h;
           break;
           case 8:
-            ret.x=this.position.x+this.bodyColision.x+w;
-            ret.y=this.position.y+this.bodyColision.y+h;
+            ret.x=this.position.x+this.bodyColision.x-w;
+            ret.y=this.position.y+this.bodyColision.y-h;
           break;
-
         }
         return ret;
     }

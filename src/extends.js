@@ -100,12 +100,33 @@ class principal extends character{
   constructor({x,y,tilesetName}){
     super({x: x,y: y, tilesetName: tilesetName })
     this.nameSprite = 'stopUp'                             //sprite atual
-    this.bodyColision = {x:20, y:20, w:20, h:20}           //pontos de colisao
+    this.bodyColision = {x:20, y:15, w:25, h:45}           //pontos de colisao
     this.principal = true                                  //personagem controlado pelo joystick
     this.tilesetName = tilesetName
     this.weaponClass = 'melee'                             //melee or ranged
   }
-  isAlive(){if(this.nameSprite !== null){return true;}}
+  update(){
+    if(this.isAlive()){
+      if(this.nameSprite !== null){
+        this.action(this.sprites[this.nameSprite]);
+      }
+    }
+  }
+}
+
+
+class enemy extends character{
+  constructor({x,y,tilesetName,isBoss}){
+    super({x: x,y: y, tilesetName: tilesetName })
+    this.nameSprite = 'stopDown'                           //sprite atual
+    this.bodyColision = {x:20, y:15, w:25, h:45}           //pontos de colisao
+    this.principal = false                                 //personagem controlado pelo joystick
+    this.tilesetName = tilesetName
+    this.weaponClass = 'melee'                             //melee or ranged
+    this.isBoss = isBoss
+    this.liveBarr = (this.isBoss ? 90 : 1 )
+  }
+  hurt(){ this.liveBarr-=1; if(this.liveBarr<=0){this.die();} }
   update(){
     if(this.isAlive()){
       if(this.nameSprite !== null){
@@ -211,7 +232,7 @@ class text{
     }
     update(){
       this.letters.forEach((item, i) => {
-        item.drawChange();
+        item.draw();
       });
     }
 }
@@ -220,9 +241,12 @@ let tiles_layer0 = [];
 let tiles_layer1 = [];
 let backgrounds = [];
 let btns = [];
+let enemys = [];
 let arrows = [];
 let texts = [];
+let rects =[];
 let Principal = null;
+let FullScreen = null;
 
 function resetObjects(){
   scenario.reset();
@@ -230,7 +254,10 @@ function resetObjects(){
   tiles_layer1 = [];
   backgrounds = [];
   btns = [];
+  enemys = [];
   arrows = [];
   texts = [];
+  shaps =[];
   Principal = null;
+  FullScreen = null;
 }
