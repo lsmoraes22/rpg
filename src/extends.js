@@ -124,11 +124,47 @@ class enemy extends character{
     this.tilesetName = tilesetName
     this.weaponClass = 'melee'                             //melee or ranged
     this.isBoss = isBoss
-    this.liveBarr = (this.isBoss ? 90 : 1 )
+    this.liveBarrFull = 90
+    this.radiusDetection = 256
+    this.liveBarr = (this.isBoss ? this.liveBarrFull : 1 )
+    this.circle = new circleStroke({x:0, y:0, radius:this.radiusDetection, border_size:1, border_color:'#000'})
+  }
+  circlarColision(x,y){
+    var x1 = x-((this.position.x+gridSize/2)-scenario.x);
+    if(x1<0){x1*=-1;}
+    var y1 = y-((this.position.y+gridSize/2)-scenario.y);
+    if(y1<0){y1*=-1;}
+    var hypotenuse = Math.sqrt(x1**2 + y1**2);
+    if(hypotenuse<this.radiusDetection){
+      return true;
+    } else {
+      return false;
+    }
+  }
+  searchPrincipal(x,y){
+    var speed = 0.4;  //velocidade do personagem
+    var thisX = ((this.position.x+gridSize/2)-scenario.x);     //calculo do ponto central
+    var thisY = ((this.position.y+gridSize/2)-scenario.y);     //calculo do ponto central
+    if( x < thisX && y < thisY ){ this.position.x-=speed; this.position.y-=speed; } else
+    if( x > thisX && y < thisY ){ this.position.x+=speed; this.position.y-=speed; } else
+    if( x > thisX && y > thisY ){ this.position.x+=speed; this.position.y+=speed; } else
+    if( x < thisX && y > thisY ){ this.position.x-=speed; this.position.y+=speed; }
   }
   hurt(){ this.liveBarr-=1; if(this.liveBarr<=0){this.die();} }
   update(){
     if(this.isAlive()){
+      if(this.isBoss){
+        this.liveBarrPicture.background.position.x = this.position.x-scenario.x;
+        this.liveBarrPicture.background.position.y = this.position.y-scenario.y;
+        this.liveBarrPicture.background.draw();
+        this.liveBarrPicture.barr.position.x = this.position.x-scenario.x;
+        this.liveBarrPicture.barr.position.y = this.position.y-scenario.y;
+        this.liveBarrPicture.barr.percentual = this.liveBarr/this.liveBarrFull;
+        this.liveBarrPicture.barr.draw();
+      }
+      this.circle.position.x = (this.position.x+32)-scenario.x;
+      this.circle.position.y = (this.position.y+32)-scenario.y;
+      this.circle.update();
       if(this.nameSprite !== null){
         this.action(this.sprites[this.nameSprite]);
       }
@@ -247,6 +283,7 @@ let texts = [];
 let rects =[];
 let Principal = null;
 let FullScreen = null;
+let invisibleColisions = [];
 
 function resetObjects(){
   scenario.reset();
@@ -260,4 +297,5 @@ function resetObjects(){
   shaps =[];
   Principal = null;
   FullScreen = null;
+  invisibleColisions = [];
 }

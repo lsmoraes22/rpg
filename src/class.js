@@ -380,6 +380,23 @@ class triangle_arrow_right_fill{
   }
 }
 
+class circleStroke{
+  constructor({x, y, radius, border_size, border_color}){
+    this.position = {x:x, y:y}
+    this.radius = radius
+    this.border_size = border_size
+    this.border_color = border_color
+  }
+  update(){
+    c.beginPath();
+    c.strokeStyle = this.border_color;
+    c.arc(this.position.x,this.position.y,this.radius,0,Math.PI*2,true);
+    c.stroke();
+    c.closePath();
+  }
+}
+
+
 class circleFill{
   constructor({x, y, radius, color, border_size, border_color}){
     this.position = {x:x, y:y}
@@ -403,7 +420,6 @@ class circleFill{
     c.closePath();
   }
 }
-
 
 class images{
     constructor({x, y, imgName}){
@@ -490,15 +506,32 @@ class images{
 }
 
 class invisibleColision{
-  constructor(x, y, colx, coly, colw, colh){
-    this.position = {x: x, y: y}
-    this.colision = {x:colx, y:coly, w:colw, h:colh}   //pontos de colisao
+  constructor({x, y, w, h, visible}){
+    this.position = {x:x, y:y}
+    this.width = w
+    this.height = h
+    this.visible = visible
   }
-  run(){
-    if(x>=this.position.x+this.colision.x &&
-       x<=this.position.x+this.colision.x+this.colision.w &&
-       y>=this.position.y+this.colision.y &&
-       y<=this.position.y+this.colision.y+this.colision.h){
+  colision(x,y){
+    if(this.visible){
+        var t = new roundRectFill({
+          x: this.position.x-scenario.x,
+          y: this.position.y-scenario.y,
+          width: this.width,
+          height: this.height,
+          color: '#000',
+          border_size: 1,
+          border_color: '#000',
+          radius: 0
+        });
+        t.update();
+      }
+    if(
+      x>=this.position.x-scenario.x
+      && y>=this.position.y-scenario.y
+      && y<=this.position.y+this.height-scenario.y
+      && x<=this.position.x+this.width-scenario.x
+    ){
        return true;
     }else{
        return false;
@@ -636,20 +669,20 @@ class tile {                                              //personagem
     }
 }
 
-class liveBarr2 extends images {
+class liveBarr2  {
     constructor({x,y}){
       this.position = {x:x,y:y}
-      this.imgName = "liveBarr1"
-      this.width = this.imgList[this.imgName].image.width
-      this.height = this.imgList[this.imgName].image.height
+      this.imgName = "liveBarr2"
+      this.width = 62 //img.imgList[this.imgName].image.width
+      this.height = 8 //img.imgList[this.imgName].image.height
     }
     draw(){
         c.drawImage(
             img.imgList[this.imgName].image,
             0,
             0,
-            this.width,
-            this.height,
+            307,
+            34,
             this.position.x,
             this.position.y,
             this.width,
@@ -658,23 +691,23 @@ class liveBarr2 extends images {
     }
 }
 
-class liveBarr1 extends images {
-    constructor({x,y,cropWidth,cropHeight}){
+class liveBarr1 {
+    constructor({x,y,perc}){
       this.position = {x:x,y:y}
-      this.imgName = "liveBarr2"
-      this.crop = {width:cropWidth, height:cropHeight}
+      this.imgName = "liveBarr1"
+      this.percentual = perc
     }
       draw(){
           c.drawImage(
               img.imgList[this.imgName].image,
               0,
               0,
-              this.crop.width,
-              this.crop.height,
+              307*this.percentual,
+              34,
               this.position.x,
               this.position.y,
-              this.crop.width,
-              this.crop.height
+              62*this.percentual,
+              8
           )
       }
 }
@@ -686,6 +719,13 @@ class character {                                              //personagem
         this.bodyColision = {x:colx, y:coly, w:colw, h:colh}   //pontos de colisao
         this.tilesetName = tilesetName                         //nome da imagem que contem o tileset
         this.weaponClass = 'melee'                             //melee or ranged
+        this.isBoss = false
+        this.liveBarrFull = 90
+        this.liveBarr = (this.isBoss ? this.liveBarrFull : 1 )
+        this.liveBarrPicture = {
+          background: new liveBarr2({x: this.position.x ,y: this.position.y}),
+          barr: new liveBarr1({x: this.position.x ,y: this.position.y, perc: this.liveBarr/this.liveBarrFull}),
+        }
         this.sprites = {
           /*criar new sprite*/
           moveUp: new sprite({
@@ -832,6 +872,152 @@ class character {                                              //personagem
             speedAnimation:0.7,
             standartgridSize: 64
           }),
+/* diagonals */
+          moveLeftUp: new sprite({
+            x:0,
+            y:0,
+            imgName: tilesetName,
+            sndName: null,
+            assX:1,
+            assY:9,
+            cropWidth: gridSize,
+            cropHeight: gridSize,
+            width: gridSize,
+            height: gridSize,
+            imgFrm:8,
+            next: 'stopLeftUp',
+            loop: false,
+            end: false,
+            speedAnimation:0.9,
+            standartgridSize: 64
+          }),
+          stopLeftUp: new sprite({
+            x:0,
+            y:0,
+            imgName: tilesetName,
+            sndName: null,
+            assX:0,
+            assY:9,
+            cropWidth: gridSize,
+            cropHeight: gridSize,
+            width: gridSize,
+            height: gridSize,
+            imgFrm:1,
+            next: null,
+            loop: true,
+            end: false,
+            speedAnimation:0.9,
+            standartgridSize: 64
+          }),
+          moveRightUp: new sprite({
+            x:0,
+            y:0,
+            imgName: tilesetName,
+            sndName: null,
+            assX:1,
+            assY:11,
+            cropWidth: gridSize,
+            cropHeight: gridSize,
+            width: gridSize,
+            height: gridSize,
+            imgFrm:8,
+            next: 'stopRightUp',
+            loop: false,
+            end: false,
+            speedAnimation:0.9,
+            standartgridSize: 64
+          }),
+          stopRightUp: new sprite({
+            x:0,
+            y:0,
+            imgName: tilesetName,
+            sndName: null,
+            assX:0,
+            assY:11,
+            cropWidth: gridSize,
+            cropHeight: gridSize,
+            width: gridSize,
+            height: gridSize,
+            imgFrm:1,
+            next: null,
+            loop: true,
+            end: false,
+            speedAnimation:0.9,
+            standartgridSize: 64
+          }),
+          moveLeftDown: new sprite({
+            x:0,
+            y:0,
+            imgName: tilesetName,
+            sndName: null,
+            assX:1,
+            assY:9,
+            cropWidth: gridSize,
+            cropHeight: gridSize,
+            width: gridSize,
+            height: gridSize,
+            imgFrm:8,
+            next: 'stopLeftDown',
+            loop: false,
+            end: false,
+            speedAnimation:0.9,
+            standartgridSize: 64
+          }),
+          stopLeftDown: new sprite({
+            x:0,
+            y:0,
+            imgName: tilesetName,
+            sndName: null,
+            assX:0,
+            assY:9,
+            cropWidth: gridSize,
+            cropHeight: gridSize,
+            width: gridSize,
+            height: gridSize,
+            imgFrm:1,
+            next: null,
+            loop: true,
+            end: false,
+            speedAnimation:0.9,
+            standartgridSize: 64
+          }),
+          moveRightDown: new sprite({
+            x:0,
+            y:0,
+            imgName: tilesetName,
+            sndName: null,
+            assX:1,
+            assY:11,
+            cropWidth: gridSize,
+            cropHeight: gridSize,
+            width: gridSize,
+            height: gridSize,
+            imgFrm:8,
+            next: 'stopRightDown',
+            loop: false,
+            end: false,
+            speedAnimation:0.9,
+            standartgridSize: 64
+          }),
+          stopRightDown: new sprite({
+            x:0,
+            y:0,
+            imgName: tilesetName,
+            sndName: null,
+            assX:0,
+            assY:11,
+            cropWidth: gridSize,
+            cropHeight: gridSize,
+            width: gridSize,
+            height: gridSize,
+            imgFrm:1,
+            next: null,
+            loop: true,
+            end: false,
+            speedAnimation:0.9,
+            standartgridSize: 64
+          }),
+/* diagonals */
           attackUp: new sprite({
             x:-62,
             y:-62,
@@ -904,7 +1090,7 @@ class character {                                              //personagem
             speedAnimation:0.7,
             standartgridSize: 64
           }),
-          die: new sprite({
+          dead: new sprite({
             x:0,
             y:0,
             imgName: tilesetName,
@@ -1021,13 +1207,11 @@ class character {                                              //personagem
           }
         }
     }
-    setNextSprite(sprt){
-      this.currentSprite = sprt;
-    }
-    die(){
-      this.nameSprite = 'die';
-    }
-    isAlive(){if(this.nameSprite !== null){return true;}}
+    setNextSprite(sprt){ this.currentSprite = sprt; }
+    die(){ this.nameSprite = 'dead'; }
+    isAlive(){ if(this.nameSprite !== null && !(this.nameSprite == 'dead') ){
+      console.log(this.nameSprite);
+      return true;}}
     isAttack(){
       if(this.nameSprite == 'attackUp' || this.nameSprite == 'attackDown' ||
          this.nameSprite == 'attackRight' || this.nameSprite == 'attackLeft'){
@@ -1094,11 +1278,17 @@ class character {                                              //personagem
     action(sprt){                                              //funcao executa a animacao atual
         this.currentSprite = sprt;
         if(this.principal){
-          if(keys.left.pressed){this.position.x-=principalSpeedMove; this.nameSprite = 'moveLeft'} else
-          if(keys.right.pressed){this.position.x+=principalSpeedMove; this.nameSprite = 'moveRight'} else
-          if(keys.up.pressed){this.position.y-=principalSpeedMove; this.nameSprite = 'moveUp'} else
-          if(keys.down.pressed){this.position.y+=principalSpeedMove; this.nameSprite = 'moveDown'}
-          if(keys.a.pressed){this.attack();}
+          if(this.isAlive()){
+            if(keys.left.pressed && keys.up.pressed){this.position.x-=principalSpeedMove; this.position.y-=principalSpeedMove; this.nameSprite = 'moveLeftUp'} else
+            if(keys.right.pressed && keys.up.pressed){this.position.x+=principalSpeedMove; this.position.y-=principalSpeedMove; this.nameSprite = 'moveRightUp'} else
+            if(keys.left.pressed && keys.down.pressed){this.position.x-=principalSpeedMove; this.position.y+=principalSpeedMove; this.nameSprite = 'moveLeftDown'} else
+            if(keys.right.pressed && keys.down.pressed){this.position.x+=principalSpeedMove; this.position.y+=principalSpeedMove; this.nameSprite = 'moveRightDown'} else
+            if(keys.left.pressed){this.position.x-=principalSpeedMove; this.nameSprite = 'moveLeft'} else
+            if(keys.right.pressed){this.position.x+=principalSpeedMove; this.nameSprite = 'moveRight'} else
+            if(keys.up.pressed){this.position.y-=principalSpeedMove; this.nameSprite = 'moveUp'} else
+            if(keys.down.pressed){this.position.y+=principalSpeedMove; this.nameSprite = 'moveDown'}
+            if(keys.a.pressed){this.attack();}
+          }
           if(scenario.c>scenario.cMin){
               if(this.position.x<=canvas.width*0.33){scenario.x-=(principalSpeedMove/2);this.position.x+=(principalSpeedMove);}
           } else {
@@ -1124,7 +1314,6 @@ class character {                                              //personagem
         }else{
           this.currentSprite.position.x = this.position.x-scenario.x;
           this.currentSprite.position.y = this.position.y-scenario.y;
-
         }
       if(
           this.currentSprite.position.x<canvas.width*2 &&

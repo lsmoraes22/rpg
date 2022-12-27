@@ -103,6 +103,7 @@ function anuncio(){
 function isNull(obj) {
     return obj === null;
 }
+
 function fullScreen(){
     var elem = document.documentElement;
     if( window.innerHeight == screen.height) {

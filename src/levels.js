@@ -23,6 +23,9 @@ function init(level){
               new enemy({x:200,y:100, tilesetName: "skeleton_arow", isBoss: false}),
               new enemy({x:300,y:-100,tilesetName: "minotauro",     isBoss: true}),
             ]
+            invisibleColisions = [
+              new invisibleColision({x:30, y:350, w:2000, h:50, visible:false})
+            ]
             /*
             texts = [
               new write({x:100, y:100, px:50, color:'#fff', family:'Comic Sans MS', text:'Lucas Sangiorato Moraes', bold:false }),

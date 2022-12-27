@@ -13,8 +13,8 @@ function animate(){
         scenario.update();
         backgrounds.forEach((item, i) => {item.update();});
         texts.forEach((item, i) => {item.update();});
-        if(Principal!=null){Principal.update();}
         enemys.forEach((item, i) => {item.update();});
+        if(Principal!=null){Principal.update();}
         shaps.forEach((item, i) => {item.update();});
         arrows.forEach((item, i) => { item.update();});
         tiles_layer0.forEach((item, i) => {item.update();});
@@ -22,6 +22,24 @@ function animate(){
         btns.forEach((item, i) => { item.update();});
         if(FullScreen!=null){FullScreen.draw();}
 /*colisions*/
+        invisibleColisions.forEach((item, i) => {
+            var p1 = Principal.points(1);     //ponto 0 do relogio analogico
+            var p2 = Principal.points(2);     //ponto 2 do relogio analogico
+            var p3 = Principal.points(3);     //ponto 3 do relogio analogico
+            var p4 = Principal.points(4);     //ponto 4 do relogio analogico
+            var p5 = Principal.points(5);     //ponto 6 do relogio analogico
+            var p6 = Principal.points(6);     //ponto 7 do relogio analogico
+            var p7 = Principal.points(7);     //ponto 9 do relogio analogico
+            var p8 = Principal.points(8);     //ponto 11 do relogio analogico
+            if( item.colision(p1.x,p1.y) ){ Principal.position.x-=principalSpeedMove; Principal.position.y+=principalSpeedMove;}
+            if( item.colision(p3.x,p3.y) ){ Principal.position.x-=principalSpeedMove; Principal.position.y+=principalSpeedMove; }
+            if( item.colision(p5.x,p5.y) ){ Principal.position.x+=principalSpeedMove; Principal.position.y-=principalSpeedMove; }
+            if( item.colision(p7.x,p7.y) ){ Principal.position.x+=principalSpeedMove; Principal.position.y-=principalSpeedMove;}
+            if( item.colision(p2.x,p2.y) ){ Principal.position.x-=principalSpeedMove; Principal.position.y+=principalSpeedMove; }
+            if( item.colision(p4.x,p4.y) ){ Principal.position.x-=principalSpeedMove; Principal.position.y-=principalSpeedMove;}
+            if( item.colision(p6.x,p6.y) ){ Principal.position.x+=principalSpeedMove;Principal.position.y-=principalSpeedMove;}
+            if( item.colision(p8.x,p8.y) ){ Principal.position.x+=principalSpeedMove;Principal.position.y+=principalSpeedMove;}
+        })
         tiles_layer0.forEach((item, i) => {
           var p1 = Principal.points(1);     //ponto 0 do relogio analogico
           var p2 = Principal.points(2);     //ponto 2 do relogio analogico
@@ -89,16 +107,16 @@ function animate(){
               p3y = Principal.attackColision.y + Principal.attackColision.posSpriteY + Principal.attackColision.h,
               p4x = Principal.attackColision.x + Principal.attackColision.posSpriteX + Principal.attackColision.w,
               p4y = Principal.attackColision.y + Principal.attackColision.posSpriteY;
-
-          if( item.colision(p2.x,p2.y) ){ Principal.position.x-=principalSpeedMove; Principal.position.y+=principalSpeedMove; } else
-          if( item.colision(p4.x,p4.y) ){ Principal.position.x-=principalSpeedMove; Principal.position.y-=principalSpeedMove;} else
-          if( item.colision(p6.x,p6.y) ){ Principal.position.x+=principalSpeedMove;Principal.position.y-=principalSpeedMove;} else
-          if( item.colision(p8.x,p8.y) ){ Principal.position.x+=principalSpeedMove;Principal.position.y+=principalSpeedMove;} else
-          if( item.colision(p1.x,p1.y) ){ Principal.position.y+=principalSpeedMove;} else
-          if( item.colision(p3.x,p3.y) ){ Principal.position.x-=principalSpeedMove; } else
-          if( item.colision(p5.x,p5.y) ){ Principal.position.y-=principalSpeedMove; } else
-          if( item.colision(p7.x,p7.y) ){ Principal.position.x+=principalSpeedMove;}
-
+          if(Principal.isAlive()){
+            if( item.colision(p2.x,p2.y) ){ Principal.die();} else
+            if( item.colision(p4.x,p4.y) ){ Principal.die();} else
+            if( item.colision(p6.x,p6.y) ){ Principal.die();} else  //Principal.position.x+=principalSpeedMove; Principal.position.y-=principalSpeedMove;
+            if( item.colision(p8.x,p8.y) ){ Principal.die();} else
+            if( item.colision(p1.x,p1.y) ){ Principal.die(); } else
+            if( item.colision(p3.x,p3.y) ){ Principal.die();} else
+            if( item.colision(p5.x,p5.y) ){ Principal.die();} else
+            if( item.colision(p7.x,p7.y) ){ Principal.die();}
+          }
           if(Principal.isAttack()){
             if(item.isAlive() &&
               ( Principal.attackColision.colision(e1.x,e1.y) ||
@@ -111,9 +129,16 @@ function animate(){
                 Principal.attackColision.colision(e8.x,e8.y)
               )){
                 item.hurt();
-                console.log(item.liveBarr);
               }
           }
+          if( item.circlarColision(p1.x,p1.y)){item.searchPrincipal(p1.x,p1.y);}
+          if( item.circlarColision(p2.x,p2.y)){item.searchPrincipal(p2.x,p2.y);}
+          if( item.circlarColision(p3.x,p3.y)){item.searchPrincipal(p3.x,p3.y);}
+          if( item.circlarColision(p4.x,p4.y)){item.searchPrincipal(p4.x,p4.y);}
+          if( item.circlarColision(p5.x,p5.y)){item.searchPrincipal(p5.x,p5.y);}
+          if( item.circlarColision(p6.x,p6.y)){item.searchPrincipal(p6.x,p6.y);}
+          if( item.circlarColision(p7.x,p7.y)){item.searchPrincipal(p7.x,p7.y);}
+          if( item.circlarColision(p8.x,p8.y)){item.searchPrincipal(p8.x,p8.y);}
         })
 /*colisions*/
 /* click mouse */
@@ -129,13 +154,13 @@ btns.forEach((item, i) =>{
                     if(item.colision(touchRight.x,touchRight.y)){Principal.attack();}
                 break;
                 case "btn_upleft":
-                    //if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.x-=3; Principal.position.y-=3;Principal.nameSprite = 'upleft';}
+                    if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.x-=3; Principal.position.y-=3;Principal.nameSprite = 'moveLeftUp';}
                 break;
                 case "btn_up":
                     if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.y-=principalSpeedMove; Principal.nameSprite = 'moveUp'}
                 break;
                 case "btn_upright":
-                    //if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.y-=principalSpeedMove; Principal.position.x+=principalSpeedMove;Principal.nameSprite = 'upright';}
+                    if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.y-=principalSpeedMove; Principal.position.x+=principalSpeedMove;Principal.nameSprite = 'moveRightUp';}
                 break;
                 case "btn_left":
                     if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.x-=principalSpeedMove;Principal.nameSprite = 'moveLeft'}
@@ -144,13 +169,13 @@ btns.forEach((item, i) =>{
                     if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.x+=principalSpeedMove;Principal.nameSprite = 'moveRight'}
                 break;
                 case "btn_downleft":
-                    //if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.y+=principalSpeedMove; Principal.position.x-=principalSpeedMove;Principal.nameSprite = 'downleft';}
+                    if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.y+=principalSpeedMove; Principal.position.x-=principalSpeedMove;Principal.nameSprite = 'moveLeftDown';}
                 break;
                 case "btn_down":
                     if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.y+=principalSpeedMove;Principal.nameSprite = 'moveDown';}
                 break;
                 case "btn_downright":
-                    //if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.y+=principalSpeedMove; Principal.position.x+=principalSpeedMove;Principal.nameSprite = 'downright';}
+                    if(item.colision(touchLeft.x,touchLeft.y)){Principal.position.y+=principalSpeedMove; Principal.position.x+=principalSpeedMove;Principal.nameSprite = 'moveRightDown';}
                 break;
             }
           }
